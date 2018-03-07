@@ -46,7 +46,7 @@ Scrapbook directory is usually something like `C:\Users\Your username\AppData\Ro
 
 Output file is an RDF data for Zotero import, give it name like import.rdf.
 
-Generate RDF file, then import it into Zotero. During import click `My Library` and watch import counter increase until import is done. **Sometimes Zotero fails to import saved web page.** It just hangs. If items counter does not increase for a minute or two then Zotero is stuck. If you have large collection, you may stumble upon such problem. Note stuck import number. Delete already imported data from Zotero, empty trash, re-export Scrapbook data using --exclude option to exclude offending entry, then import everything again.
+Generate RDF file, then import it into Zotero. During import click `My Library` and watch import counter increase until import is done. **Sometimes (rare) Zotero fails to import certain saved web pages.** It just hangs. If items counter does not increase for a minute or two then Zotero is stuck. If you have a very large collection, you may stumble upon such a problem. Note stuck import number. Delete already imported data from Zotero, empty trash, re-export Scrapbook data using `--exclude` option to exclude offending entry, then import everything again.
 
 If you don't want to generate collections based on Scrapbook tree structure, use `--nocoll` flag. If you don't want to generate tags based on Scrapbook tree structure, use `--notags` flag.
 
