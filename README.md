@@ -14,7 +14,8 @@ Unfortunately, Zotero can't import Scrapbook data directly. So I wrote this scri
 
 ### Windows: 
 
-Download scrapbook2zotero.exe, open CMD shell in your download directory or place .exe file somewhere in your PATH.
+Download scrapbook2zotero.exe from https://github.com/burbilog/scrapbook2zotero/releases 
+Open CMD shell in your download directory or place .exe file somewhere in your PATH.
  
 ### Linux: 
 

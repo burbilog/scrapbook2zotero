@@ -35,6 +35,8 @@ w:
 
 win32:
 	wine pyinstaller --onefile scrapbook2zotero.py
+	cd dist
+	zip scrapbook2zotero.zip scrapbook2zotero.exe
 
 # Run this if you are sure that scrapbook2zotero output is correct
 # pytest tests depend on samples/*.rdf files
