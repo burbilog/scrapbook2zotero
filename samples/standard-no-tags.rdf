@@ -1,0 +1,168 @@
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:z="http://www.zotero.org/namespaces/export#"
+xmlns:dcterms="http://purl.org/dc/terms/"
+xmlns:link="http://purl.org/rss/1.0/modules/link/"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:bib="http://purl.org/net/biblio#">
+    <bib:Document rdf:about="http://www.popadancev.net/pulsejet/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_20180222112456"/>
+        <dc:subject></dc:subject>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.popadancev.net/pulsejet/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:24:56</dcterms:dateSubmitted>
+        <dc:title>ПуВРД « Попаданцев.нет</dc:title>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_20180222112456">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20180222112456/index.html"/>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.popadancev.net/pulsejet/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:24:56</dcterms:dateSubmitted>
+        <dc:title>ПуВРД « Попаданцев.нет</dc:title>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="http://www.popadancev.net/laser/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_20180222115059"/>
+        <dc:subject></dc:subject>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.popadancev.net/laser/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:50:59</dcterms:dateSubmitted>
+        <dc:title>Лазер « Попаданцев.нет</dc:title>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_20180222115059">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20180222115059/index.html"/>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.popadancev.net/laser/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:50:59</dcterms:dateSubmitted>
+        <dc:title>Лазер « Попаданцев.нет</dc:title>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="http://polit.ru/article/2010/07/01/zalizniak/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_20180222115534"/>
+        <dc:subject></dc:subject>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://polit.ru/article/2010/07/01/zalizniak/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:55:34</dcterms:dateSubmitted>
+        <dc:title>Что такое любительская лингвистика - ПОЛИТ.РУ</dc:title>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_20180222115534">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20180222115534/index.html"/>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://polit.ru/article/2010/07/01/zalizniak/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:55:34</dcterms:dateSubmitted>
+        <dc:title>Что такое любительская лингвистика - ПОЛИТ.РУ</dc:title>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="http://linuxpitstop.com/install-seamonkey-on-ubuntu/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_20180222115430"/>
+        <dc:subject></dc:subject>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://linuxpitstop.com/install-seamonkey-on-ubuntu/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:54:30</dcterms:dateSubmitted>
+        <dc:title>How to install SeaMonkey On Ubuntu Linux  LinuxPitStop</dc:title>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_20180222115430">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20180222115430/index.html"/>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://linuxpitstop.com/install-seamonkey-on-ubuntu/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:54:30</dcterms:dateSubmitted>
+        <dc:title>How to install SeaMonkey On Ubuntu Linux  LinuxPitStop</dc:title>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="http://www.lpi.usra.edu/opag/meetings/aug2015/presentations/day-2/11_beauchamp.pdf">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_20170808125614"/>
+        <link:link rdf:resource="#item_2017080812561401"/>
+        <dc:subject></dc:subject>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.lpi.usra.edu/opag/meetings/aug2015/presentations/day-2/11_beauchamp.pdf</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2017-08-08 12:56:14</dcterms:dateSubmitted>
+        <dc:title>Slide 1 - 11_beauchamp.pdf</dc:title>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_20170808125614">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20170808125614/index.html"/>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.lpi.usra.edu/opag/meetings/aug2015/presentations/day-2/11_beauchamp.pdf</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2017-08-08 12:56:14</dcterms:dateSubmitted>
+        <dc:title>Slide 1 - 11_beauchamp.pdf</dc:title>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_2017080812561401">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20170808125614/11_beauchamp.pdf"/>
+        <dc:title>11_beauchamp.pdf</dc:title>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Collection rdf:about="#collection_20180222113228">
+        <dc:title>Корневой каталог</dc:title>
+        <dcterms:hasPart rdf:resource="http://www.popadancev.net/laser/"/>
+    </z:Collection>
+    <z:Collection rdf:about="#collection_20180222113242">
+        <dc:title>Второй корневой каталог</dc:title>
+        <dcterms:hasPart rdf:resource="#collection_20180222113317"/>
+        <dcterms:hasPart rdf:resource="http://linuxpitstop.com/install-seamonkey-on-ubuntu/"/>
+    </z:Collection>
+    <z:Collection rdf:about="#collection_20180222113317">
+        <dc:title>Подкаталогг</dc:title>
+        <dcterms:hasPart rdf:resource="http://polit.ru/article/2010/07/01/zalizniak/"/>
+    </z:Collection>
+</rdf:RDF>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:NS1="http://amb.vis.ne.jp/mozilla/scrapbook-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Seq RDF:about="urn:scrapbook:item20180222113242">
+    <RDF:li RDF:resource="urn:scrapbook:item20180222113252"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:scrapbook:item20180222113242"
+                   NS1:id="20180222113242"
+                   NS1:type="folder"
+                   NS1:title="Второй корневой каталог"
+                   NS1:chars=""
+                   NS1:icon=""
+                   NS1:source=""
+                   NS1:comment="" />
+  <RDF:Seq RDF:about="urn:scrapbook:root">
+    <RDF:li RDF:resource="urn:scrapbook:item20180222112456"/>
+    <RDF:li RDF:resource="urn:scrapbook:item20180222113228"/>
+    <RDF:li RDF:resource="urn:scrapbook:item20180222113242"/>
+    <RDF:li RDF:resource="urn:scrapbook:item20180222113317"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:scrapbook:item20180222113328"
+                   NS1:id="20180222113328"
+                   NS1:type="bookmark"
+                   NS1:title="How to install SeaMonkey On Ubuntu Linux | LinuxPitStop"
+                   NS1:chars=""
+                   NS1:comment=""
+                   NS1:icon=""
+                   NS1:source="http://linuxpitstop.com/install-seamonkey-on-ubuntu/" />
+  <RDF:Description RDF:about="urn:scrapbook:item20180222113252"
+                   NS1:id="20180222113252"
+                   NS1:type="bookmark"
+                   NS1:title="How to install SeaMonkey On Ubuntu Linux | LinuxPitStop"
+                   NS1:chars=""
+                   NS1:comment=""
+                   NS1:icon=""
+                   NS1:source="http://linuxpitstop.com/install-seamonkey-on-ubuntu/" />
+  <RDF:Seq RDF:about="urn:scrapbook:item20180222113228">
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:scrapbook:item20180222113228"
+                   NS1:id="20180222113228"
+                   NS1:type="folder"
+                   NS1:title="Корневой каталог"
+                   NS1:chars=""
+                   NS1:icon=""
+                   NS1:source=""
+                   NS1:comment="" />
+  <RDF:Seq RDF:about="urn:scrapbook:item20180222113317">
+    <RDF:li RDF:resource="urn:scrapbook:item20180222113328"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:scrapbook:item20180222113317"
+                   NS1:id="20180222113317"
+                   NS1:type="folder"
+                   NS1:title="Подкаталогг"
+                   NS1:chars=""
+                   NS1:icon=""
+                   NS1:source=""
+                   NS1:comment="" />
+  <RDF:Description RDF:about="urn:scrapbook:item20180222112456"
+                   NS1:id="20180222112456"
+                   NS1:type=""
+                   NS1:title="ПуВРД « Попаданцев.нет"
+                   NS1:chars="UTF-8"
+                   NS1:comment=""
+                   NS1:icon="http://www.popadancev.net/wp-content/themes/atahualpa/images/favicon/popadancev.ico"
+                   NS1:source="http://www.popadancev.net/pulsejet/" />
+</RDF:RDF>
