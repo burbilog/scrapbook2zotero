@@ -50,9 +50,9 @@ Generate RDF file, then import it into Zotero. During import click `My Library` 
 
 ## Development information
 
-Prerequisites: python 2.7 for linux and windows, pytest, rdflib
+Prerequisites: python 2.7 for linux and windows, pytest, rdflib. This script was developed on Linux and windows .exe is built with wine.
 
-### Linux
+### Setup
 
 	sudo apt-get install python pip
 	sudo pip install rdflib
@@ -68,7 +68,7 @@ Download latest python 2.7 for windows from https://www.python.org/downloads/win
 	wine pip install rdflib pyinstaller
 	make win32
 
-### Running the tests
+### Running tests
 
     make win32
 	make test
@@ -79,7 +79,7 @@ Currently there is no export for 'note' or 'notex' item types. I never used note
 
 ## Author
 
-* **Roman V. Isaev** - [burbilog](https://github.com/burbilog)
+* **Roman V. Isaev** - [burbilog](https://github.com/burbilog) - <rm@isaeff.net>
 
 ## Acknowledgments
 
