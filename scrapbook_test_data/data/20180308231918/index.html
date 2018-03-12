@@ -1,0 +1,463 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+<title>Резервирование и восстановление с помощью программы RMAN</title>
+
+<link rel="stylesheet" type="text/css" href="index.css" media="all">
+</head>
+<body link="#0000ee" text="#000000" vlink="#551a8b" alink="#ff0000" bgcolor="#ffffff">
+
+
+
+
+<div style="border: 1px solid rgb(153, 0, 0); padding: 2px 0px; width: 100%; background-color: rgb(255, 204, 187); font-size: 16px;" align="center">Вы находитесь на страницах старой версии сайта. <br><b><a href="http://www.interface.ru/" target="_top">Переходите на новую версию Interface.Ru</a></b></div>
+<p>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr> 
+    <td><b><font color="#006699">СТАТЬЯ</font></b></td>
+    <td> 
+      <div align="right"><b><font color="#006699">09.04.03</font></b></div>
+    </td>
+  </tr>
+</tbody></table>
+</p><hr noshade="noshade">
+
+<h1 align="center">Резервирование и восстановление с помощью программы RMAN</h1>
+<p align="right">©<a href="http://www.interface.ru/services/mailfrompage.asp?To=oracle"> <em>Владимир
+    Пржиялковский</em></a>,<br>
+  координатор Евро-Азиатской Группы Пользователей Oracle,<br>
+преподаватель <a href="http://www.interface.ru/training/c1.htm">УКЦ Interface Ltd</a>.</p>
+<ul>
+  <li> <a href="#1">Введение</a></li>
+  <li> <a href="#2">Возможности RMAN</a></li>
+  <li><a href="#3"> Основные понятия</a></li>
+  <li> <a href="#4">Пример копирования и восстановления базы данных
+  </a>    <ul>
+      <li> <a href="#5">Упрощения в версии 9</a></li>
+    </ul>
+  </li>
+  <li><a href="#6"> Резервирование файлов базы данных
+  </a>    <ul>
+      <li><a href="#7"> Горячее полное резервирование БД</a></li>
+      <li> <a href="#8">Полное резервирование табличного пространства</a></li>
+      <li> <a href="#9">Полное резервирование отдельных файлов табличного пространства</a></li>
+      <li><a href="#10"> Резервирование временного табличного пространства</a></li>
+      <li><a href="#11"> Резервирование контрольного файла</a></li>
+      <li><a href="#12"> Резервирование оперативных файлов журнала</a></li>
+      <li><a href="#13"> Резервирование архивных копий журнала</a></li>
+      <li> <a href="#14">Резервирование изменений (неполное резервирование)</a></li>
+    </ul>
+  </li>
+  <li><a href="#15"> Выдача справочной информации</a></li>
+  <li><a href="#16"> Удаление резервных копий</a></li>
+  <li><a href="#17"> Восстановление данных
+  </a>    <ul>
+      <li><a href="#18"> Восстановление до момента сбоя («последнего момента»)</a></li>
+      <li><a href="#19"> Восстановление до указанного момента в прошлом</a></li>
+    </ul>
+  </li>
+  <li><a href="#20"> Автоматизация задач</a></li>
+</ul>
+<h2><a name="1">Введение</a></h2>
+<p>Программа <strong>RMAN</strong> появилась в версии 8 СУБД Oracle как единое для всех платформ
+  средство организации резервного копирования и восстановления данных на физическом
+  уровне. По отношению к традиционным базовым возможностям резервирования и восстановления
+  в Oracle, у программы RMAN есть некоторые преимущества, делающие ее в некоторых
+  ситуациях (например, при больших объемах данных) практически незаменимой. К
+  сожалению, наличие этих преимуществ не лишает RMAN и ряда существенных недостатков:
+  собственной системы понятий, собственного командного языка и интерфейса общения
+  с администратором. И то, и другое, и третье выполнено в плохих традициях разработчиков
+  Oracle – не вполне логично, запутано и непоследовательно, – что затрудняет
+  освоение этой программы. Назначение этой статьи – помочь перешагнуть через
+  эти недостатки ради выгод, которые можно извлечь из RMAN.</p>
+<h2><a name="2">Возможности RMAN</a></h2>
+<p>Возможности RMAN включают следующее:</p>
+<table width="96%" border="0">
+  <tbody><tr>
+    <td>-</td>
+    <td>выполнение полного резервирования и резервирования изменений</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>выполнение холодного/горячего резервирования, причем во втором случае
+      табличные пространства не переводятся в режим backup, что позволяет избежать
+    дополнительной нагрузки на журнал</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>обнаружение поврежденных блоков</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>параллельное выполнения операций ввода/вывода</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>автоматическое протоколирование операций копирования и восстановления</td>
+  </tr>
+</tbody></table>
+<p>Уровни выполнения резервного копирования/восстановления с помощью RMAN:</p>
+<ul>
+  <li> база данных</li>
+  <li> табличные пространства</li>
+  <li> файлы табличных пространств</li>
+  <li> служебные файлы БД (контрольные, архивные)</li>
+</ul>
+<p>Основные понятия</p>
+<p>В число основных понятий RMAN входят следующие:</p>
+<table width="75%" border="0">
+  <tbody><tr>
+    <td valign="top" width="3%">- </td>
+    <td valign="top" width="97%"><strong><em>Канал</em></strong><em> (channel)</em>. Серверный процесс, возникающий при установлении
+      связи с устройством ввода/вывода (диск или магнитная лента) для записи
+    или чтения файлов резервирования</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Целевая БД</em></strong><em> (target database)</em>. БД, для которой снимается резервная копия,
+    или которая восстанавливается по ранее снятой копии</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Каталог </em></strong><em>(recovery catalog)</em>. Отдельная схема в БД (чаще в отдельной БД),
+      которую можно заводить для хранения служебная информации о целевых базах,
+      снятых копиях и процедурах восстановления. Альтернативой каталогу является
+      индивидуальная работа с каждой целевой БД, когда служебная информация помещается
+    в контрольный файл этой БД.</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Копия</em></strong><em> (RMAN backup)</em>. Резервная копия какого-нибудь элемента БД, получаемая
+    командой RMAN backup.</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Резервный набор</em></strong><em> (backup set)</em>. Логически именует набор файлов, сформированных
+    во время резервного копирования.</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Резервный файл</em></strong><em> (backup piece)</em>. Двоичный файл с резервной информацией.</td>
+  </tr>
+</tbody></table>
+<p>Синтаксис командного языка RMAN в версии 9 имеет определенные отличия от версии
+  8, но все основные конструкции сохранены. Кроме этого, в RMAN для версии 9
+  допускается целый ряд упрощений записи команд. </p>
+<p>Возможность работы с RMAN включена также в последние версии OEM без необходимости
+  знания командного языка.</p>
+<p>В тексте ниже для лаконичности предпочтение будет отдаваться синтаксису версии
+  9. Кроме этого для простоты рассматривается работа без каталога RMAN.</p>
+<h2><a name="3">Пример копирования и восстановления базы данных</a></h2>
+<p>Простейший пример снятия резервной копии (холодное копирование – вся БД –
+  работа без каталога) иллюстрируется следующей последовательностью команд (здесь
+  команда CONNECT TARGET соединяет RMAN с СУБД версии 8):</p>
+<p>RMAN NOCATALOG<br>
+  RMAN&gt; CONNECT TARGET internal/oracle<br>
+  RMAN&gt; SHUTDOWN IMMEDIATE<br>
+  RMAN&gt; STARTUP MOUNT<br>
+  RMAN&gt; RUN {<br>
+  2&gt; ALLOCATE CHANNEL d1 TYPE DISK;<br>
+  3&gt; BACKUP FULL FORMAT 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%U.bus'<br>
+  4&gt; DATABASE;<br>
+  4&gt; }<br>
+  RMAN&gt; </p>
+<p>В каталоге D:\ORACLE\ORADATA\TEACHER\RMAN-BACKUP появился файл RMAN_ TEACHER
+  _02DGA6F0_1_1.BUS (реальное имя может варьироваться). Теперь можно удалить
+  файлы с табличными пространствами и выполнить восстановление:</p>
+<p>RMAN&gt; RUN {<br>
+  2&gt; ALLOCATE CHANNEL d1 TYPE DISK;<br>
+  3&gt; RESTORE DATABASE;<br>
+  4&gt; RECOVER DATABASE;<br>
+  5&gt; ALTER DATABASE OPEN;<br>
+  6&gt; }</p>
+<p>База восстановлена и открыта. </p>
+<h3><a name="4">Упрощения в версии 9</a></h3>
+<p>В версии RMAN для версии 9 описанное выше резервирование можно было бы выполнить
+  так:</p>
+<p>RMAN&gt; BACKUP DATABASE FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%U.bus';</p>
+<p>а восстановление так:</p>
+<p>RMAN&gt; RESTORE DATABASE;<br>
+  RMAN&gt; RECOVER DATABASE;<br>
+  RMAN&gt; ALTER DATABASE OPEN;</p>
+<p>Здесь подразумевается использование неявного канала по умолчанию, так что
+  объявлять его стало необязательно. </p>
+<p>Кроме этого в версии 9 появилась команда CONFIGURE, с помощью которой (помимо
+  прочего) можно связать с каналом направление и маску имени файлов для резервного
+  набора:</p>
+<p>RMAN&gt; CONFIGURE CHANNEL DEVICE TYPE DISK FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%U.bus';</p>
+<p>В этом случае команда снятия резервной копии может выглядеть еще проще:</p>
+<p>RMAN&gt; BACKUP DATABASE;</p>
+<h2><a name="5">Резервирование файлов базы данных</a></h2>
+<h3><a name="7">Горячее полное резервирование БД</a></h3>
+<p>Горячее резервирование </p>
+<table width="75%" border="0">
+  <tbody><tr>
+    <td valign="top">- </td>
+    <td>может выполняться в состоянии СУБД OPEN</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td>может выполняться только при включенном режиме архивирования журналов</td>
+  </tr>
+</tbody></table>
+<p>Если выполнено и то, и другое, сами действия по резервированию выглядят как
+обычно. Пример в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP DATABASE FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%t_%U.bus';</p>
+<h3><a name="8">Полное резервирование табличного пространства</a></h3>
+<p>Пример в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP TABLESPACE system, users FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%t_%U.bus';</p>
+<h3><a name="9">Полное резервирование отдельных файлов табличного пространства</a></h3>
+<p>Пример в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP DATAFILE 1, 2;</p>
+<p>или</p>
+<p>RMAN&gt; BACKUP FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%t_%U.bus'<br>
+  3&gt; 'd:\oracle\oradata\teacher\system01.dbf’,<br>
+  4&gt; 'd:\oracle\oradata\teacher\users01.dbf’;</p>
+<h3><a name="10">Резервирование временного табличного пространства</a></h3>
+<p>Если временное табличное пространство локально управляемо, оно автоматически
+  не резервируется. Восстанавливать (воссоздавать) при необходимости его придется
+  самостоятельно.</p>
+<h3><a name="11">Резервирование контрольного файла</a></h3>
+<p>Обычное резервирование контрольного файла приходится выполнять отдельно. Пример
+  явного резервирования в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP CURRENT CONTROLFILE;</p>
+<p>В версии 9 можно, однако, перевести RMAN в режим, когда копии контрольного
+  файла будут сниматься автоматически при всякой выдаче команд BACKUP или COPY:</p>
+<p>RMAN&gt; CONFIGURE CONTROLFILE AUTOBACKUP ON;</p>
+<h3><a name="12">Резервирование оперативных файлов журнала</a></h3>
+<p>Оперативные (онлайновые) файлы журнала автоматически не резервируются. Для
+  сохранения либо следует их</p>
+<p>а) копировать отдельно, либо<br>
+  б) перед полным резервированием БД отправлять в архив.</p>
+<h3><a name="13">Резервирование архивных копий журнала</a></h3>
+<p>Файлы архивных копий журнала резервируются всегда в отдельные от прочих файлы
+  резервного набора и в общем случае их нужно резервировать отдельной командой.
+  Пример в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP ARCHIVELOG ALL;</p>
+<p>Пример того, как в версии 9.0 архивные файлы можно включить в состав резервного
+  набора БД:</p>
+<p>RMAN&gt; BACKUP DATABASE FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%U.bus' PLUS ARCHIVELOG;</p>
+<h3><a name="14">Резервирование изменений (неполное резервирование)</a></h3>
+<p>Для резервирования изменений в Oracle используется традиционная многоуровневая
+  модель с конкретным числом уровней копии 5 (от 0 до 4). Точкой отсчета для
+  копирования изменений обязана стать снятая ранее полная копия БД уровня 0.</p>
+<p>Пример резервирования блоков, изменившихся со времени резервирования на уровнях
+  3, 2, 1 и 0 (разностное, «дифференциального» резервирование) в синтаксисе версии
+  9:</p>
+<p>RMAN&gt; BACKUP INCREMENTAL LEVEL 3 DATABASE;</p>
+<p>Пример резервирования блоков, изменившихся со времени последнего резервирования
+  на уровнях 2, 1 и 0 (разностно-накопительное, «кумулятивное» резервирование)
+  с пропуском табличных пространств, закрытых для записи (синтаксис версии 9):</p>
+<p>RMAN&gt; BACKUP INCREMENTAL LEVEL 3 CUMULATIVE DATABASE<br>
+  2&gt; SKIP READONLY;</p>
+<p>Разностно-накопительное (кумулятивное) резервирование уровня N отличается
+  от разностного (дифференциального) тем, что резервирует изменения произошедшие
+  после выполнения резервирования всех уровней &lt; N, в то время как просто
+  разностное – изменения, произошедшие после резервирования уровней &lt;= N. </p>
+<h2><a name="15">Выдача справочной информации</a></h2>
+<p>Выполняется специальными командами LIST и REPORT, а также разновидностью команды
+  RESTORE. Примеры приводятся ниже.</p>
+<p>Выдача подробного списка всех снятых копий:</p>
+<p>RMAN&gt; LIST BACKUP;</p>
+<p>Выдача списка резервных наборов, содержащих табличное пространство SYSTEM:</p>
+<p>RMAN&gt; LIST BACKUP OF TABLESPACE system;</p>
+<p>Вариант выдачи того же самого, но в обобщенном виде (версия 9):</p>
+<p>RMAN&gt; LIST BACKUP OF TABLESPACE system SUMMARY;</p>
+<p>Выдача информации о копиях, снятых с архивов журналов:</p>
+<p>RMAN&gt; LIST BACKUP OF ARCHIVELOG ALL;</p>
+<p>Выдача резервных копий, оказавшихся устаревшими:</p>
+<p>RMAN&gt; REPORT OBSOLETE;</p>
+<p>Выдача файлов с данными БД, для восстановления которых потребуются архивы
+  журналов 2-х дневной давности и более:</p>
+<p>RMAN&gt; REPORT NEED BACKUP DAYS 2 DATABASE;</p>
+<p>Те же сведения, но только для пространства SYSTEM:</p>
+<p>RMAN&gt; REPORT NEED BACKUP DAYS 2 TABLESPACE system;</p>
+<p>Выдача информации о том, годны ли файлы резервного набора для восстановления:</p>
+<p>RMAN&gt; RUN {ALLOCATE CHANNEL d1 TYPE DISK;<br>
+  2&gt; RESTORE DATABASE VALIDATE; }</p>
+<h2><a name="16">Удаление резервных копий</a></h2>
+<p>Выполняется командой DELETE. В простейшем варианте удаление устаревших копий
+  может выглядеть так:</p>
+<p>RMAN&gt; DELETE OBSOLETE;</p>
+<p>Обратите внимание, что RMAN удалил ненужные файлы резервных наборов. Вам не
+  нужно автоматизировать удаление старых файлов, как раньше!</p>
+<p>Файлы резервных наборов могут оказаться испорченными или поврежденными. Это
+  можно отметить в справочнике (в контрольном файле или в каталоге RMAN) с помощью
+  команды CROSSCHECK, в результате чего они будут помечены там как EXPIRED. Последующая
+  команда DELETE EXPIRED удалит ставшие ненужными из-за этого файлы:</p>
+<p>RMAN&gt; CROSSCHECK BACKUP;<br>
+  …<br>
+  RMAN&gt; DELETE EXPIRED BACKUP OF DATABASE;<br>
+  …<br>
+  RMAN&gt; DELETE BACKUP OF DATABASE;</p>
+<p>Более сложный пример удаления устаревших резервных копий:</p>
+<p>RMAN&gt; DELETE OBSOLETE RECOVERY WINDOW OF 14 DAYS;</p>
+<h2><a name="17">Восстановление данных</a></h2>
+<table width="82%" border="0">
+  <tbody><tr>
+    <td valign="top" align="right">- </td>
+    <td>Для восстановления данных целевая БД должна находиться в состоянии NOMOUNT/
+    MOUNT/ OPEN в зависимости от характера восстановления, например</td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td><blockquote>
+      <p>NOMOUNT: для восстановления контрольных файлов БД (фактически – СУБД) </p>
+    </blockquote>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td><blockquote>
+      <p>MOUNT: для восстановления БД целиком или табличного пространства SYSTEM</p>
+    </blockquote>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td><blockquote>
+      <p>OPEN: для восстановление табличных пространств, помимо SYSTEM (в этом
+          случае перед процедурой восстановления само табличное пространство потребуется
+        перевести в состояние OFFLINE).</p>
+    </blockquote>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td>Восстановление файлов (с данными и служебных) выполняется в RMAN командой
+    RESTORE.</td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td>Восстановление данных выполняется либо в RMAN, либо в SQL*Plus командами
+    RECOVER при условии наличия восстановленных файлов.</td>
+  </tr>
+</tbody></table>
+<h3><a name="18">Восстановление до момента сбоя («последнего момента»)</a></h3>
+<p>Некоторые примеры восстановления:</p>
+<p>RMAN&gt; RECOVER DATABASE;</p>
+<p>RMAN&gt; RECOVER TABLESPACE users;</p>
+<p>RMAN&gt; RECOVER DATAFILE 'd:\oracle\oradata\teacher\users01.dbf’;</p>
+<p>RMAN&gt; RESTORE CONTROLFILE;</p>
+<p>RMAN&gt; RUN {<br>
+  2&gt; SET ARCHIVELOG DESTINATION TO ‘d:\oracle\oradata\archive’;<br>
+  3&gt; RESTORE ARCHIVELOG ALL; }</p>
+<p>Восстановление пространств, закрытых на запись:</p>
+<p>RMAN&gt; SQL "ALTER TABLESPACE lookup_data OFFLINE";<br>
+  RMAN&gt; RECOVER TABLESPACE lookup_data;<br>
+  RMAN&gt; SQL "ALTER TABLESPACE lookup_data ONLINE";</p>
+<h3><a name="19">Восстановление до указанного момента в прошлом</a></h3>
+<p>БД, работающую в режиме архивирования журнала, можно восстанавливать до определенного
+  указанного момента с помощью фраз UNTIL {TIME … | SCN … | SEQUENCE … THREAD…}.
+  Пример:</p>
+<p>RMAN&gt; RESTORE DATABASE;	# восстановили файлы<br>
+  RMAN&gt; RECOVER DATABASE UNTIL SCN 375831;	# восстановили БД<br>
+  RMAN&gt; ALTER DATABASE OPEN RESETLOGS;	# сбросили журнал</p>
+<p>Восстановление БД (вторая и третья строчки выше) можно выполнить и в SQL*Plus: </p>
+<p>SQL &gt; RECOVER DATABASE UNTIL CANCEL;<br>
+  SQL&gt; ALTER DATABASE OPEN RESETLOGS;</p>
+<p>При таком восстановлении необходимо сбросить онлайновый журнал. После этого,
+  как и при традиционном восстановлении со сбросом журналов (RESETLOGS), необходимо
+  снять полную копию БД, так как с этого момента восстановление с более ранних
+  резервных копий станет невозможным из-за того, что история журнальных записей
+  прерывается.</p>
+<h2><a name="20">Автоматизация задач</a></h2>
+<p>Автоматизировать выполнение задач с RMAN можно как внешними средствами (язык
+  командной оболочки), так и внутренними. Внутренние средства RMAN допускают
+  указание файла сценария при вызове этой программы, а также организацию хранимого
+  сценария.</p>
+<p>Пусть в файле listbackup.rcm находятся строки:</p>
+<p>CONNECT TARGET /<br>
+  LIST BACKUP;<br>
+  EXIT</p>
+<p>Тогда следующие два эквивалентные по результату обращения в ОС приведут ко
+  входу в RMAN, выполнению этого сценария и выходу:</p>
+<p>RMAN CMDFILE=listback.rcm NOCATALOG</p>
+<p>RMAN @listback.rcm NOCATALOG</p>
+<p>При использовании каталога RMAN возможно к тому же использование хранимого
+  сценария:</p>
+<p>RMAN&gt; REPLACE SCRIPT reportobsolete { REPORT OBSOLETE; }</p>
+<p>Пример обращения в хранимому в каталоге сценарию:</p>
+<p>RMAN&gt; RUN { EXECUTE SCRIPT reportobsolete; }</p>
+<p align="center"><strong>Дополнительная информация</strong></p>
+<ul>
+  <li> <a href="http://www.interface.ru/services/mailfrompage.asp?To=oracle">Вы можете отправить свое
+      мнение о материале его автору</a></li>
+  <li>  <a href="http://www.interface.ru/services/mailfrompage.asp">Обратиться в Interface Ltd. за дополнительной
+      информацией/по вопросу приобретения продуктов</a></li>
+  <li>  <a href="http://www.interface.ru/training/schedule.htm#6">Курсы по продуктам фирмы Oracle </a></li>
+  <li>  <a href="http://www.interface.ru/oracle/gazeta/master.htm">Другие статьи по продуктам Oracle из
+        рубрики "Мастерская Oracle"</a> </li>
+</ul>
+<p>За дополнительной информацией обращайтесь в компанию Interface Ltd.
+</p><p align="center"><a href="http://www.interface.ru/forum/display_forum.asp?fid=oracle">Обсудить на форуме Oracle</a> 
+
+</p><div class="Small" align="center"><a href="http://www.interface.ru/services/sendlink.asp?link=%2Foracle%2Froman%2Ehtm&amp;title=">Рекомендовать страницу</a></div>
+
+<hr>
+<table width="94%" border="0" cellpadding="0" cellspacing="0" align="center">
+  <tbody><tr> 
+    <td class="Main" style="color: Blue;" valign="top" width="46%"><span class="Interface">INTERFACE Ltd.</span><br>
+<div class="Main"><nobr>Телефон/Факс: +7 (495) 925-0049</nobr><br>
+<a href="http://www.interface.ru/services/mailfrompage.asp?link=%2Foracle%2Froman%2Ehtm&amp;title=">Отправить E-Mail</a><br>
+<a href="http://www.interface.ru/" target="_top">http://www.interface.ru</a></div>
+</td>
+<td valign="top" width="54%">
+<table border="0" cellpadding="0" cellspacing="0" align="right">
+<tbody><tr><td height="31" valign="top" width="70%" align="right">
+<!--begin of Rambler's Top100 code -->
+<a href="http://top100.rambler.ru/top100/"><img style="display: none;" src="top100.cnt" alt="" height="1" width="1" border="0"></a>
+<!--end of Top100 code-->
+<!-- HotLog -->
+
+
+
+<img style="display: none;" src="count.dat" height="1" width="1" border="0">
+
+<!-- /HotLog -->
+<!--begin of Top100 logo-->
+<a href="http://top100.rambler.ru/top100/"><img style="display: none;" src="w1.gif" alt="Rambler's Top100" height="31" width="88" border="0"></a>
+<!--end of Top100 logo -->
+</td>
+<td style="padding: 6px 0px 0px 4px;" valign="top" width="30%">
+<!--Rating@Mail.ru COUNTER--><a href="http://top.mail.ru/jump?from=30466" target="_top"><img style="display: none;" src="counter.dat" alt="Рейтинг@Mail.ru" height="18" width="88" border="0"></a><!-- <noscript><a
+target=_blank href="http://top.mail.ru/jump?from=30466"><img
+src="http://top.list.ru/counter?js=na;id=30466;t=84"
+border=0 height=18 width=88
+alt="Рейтинг@Mail.ru"/></a></noscript><script language="JavaScript" type="text/javascript"><!--
+if(11<js)d.write('--'+'>')//--><!--/COUNTER-->
+</td></tr>
+<tr>
+<td class="subSmall" colspan="2" valign="top" align="right">
+
+Ваши замечания и предложения <a href="http://www.interface.ru/services/mailfrompage.asp?To=kurmaz&amp;link=%2Foracle%2Froman%2Ehtm&amp;title=" target="_top">отправляйте редактору</a><br>
+
+По техническим вопросам <a href="http://www.interface.ru/services/mailfrompage.asp?To=serkov&amp;link=%2Foracle%2Froman%2Ehtm&amp;title=">обращайтесь к вебмастеру</a><br>
+
+Дата публикации: 09.04.03
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+<br>
+<div align="center">
+
+<!-- MEMPHIS BEGIN: [Интерфейс / низ / сквозное / 468] -->
+
+
+<br>
+</div>
+
+
+
+
+
+</body>
+</html>

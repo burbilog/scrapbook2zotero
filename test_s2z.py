@@ -37,7 +37,7 @@ def test_1_reading_scrapbook_rdf():
 
     scrapbook2zotero.Args.debug = False
     root, items = scrapbook2zotero.open_scrapbook_rdf("scrapbook_test_data")
-    assert len(items) == 9
+    assert len(items) == 11
     assert isinstance(root, scrapbook2zotero.Node)
 
 def test_2_standard_run():
@@ -113,3 +113,17 @@ def test_6_notags():
         pass
     scrapbook2zotero.main(["scrapbook_test_data", "tmp/test6.rdf", "--notags"])
     assert filecmp.cmp("samples/standard-no-tags.rdf", "tmp/test6.rdf")
+
+def test_7_notags():
+    """ Generate .rdf file from scrapbook_test_data and compare it to
+    stored .rdf file from samples/standard-no-dedup.rdf. Testing --nodedup flag.
+
+    If you change output format or contents of scrapbook_test_data,
+    rebuild rdf file.
+    """
+    try:
+        os.remove("tmp/test7.rdf")
+    except OSError:
+        pass
+    scrapbook2zotero.main(["scrapbook_test_data", "tmp/test7.rdf", "--nodedup"])
+    assert filecmp.cmp("samples/standard-no-dedup.rdf", "tmp/test7.rdf")

@@ -35,8 +35,8 @@ w:
 
 win32:
 	wine pyinstaller --onefile scrapbook2zotero.py
-	cd dist
-	zip scrapbook2zotero.zip scrapbook2zotero.exe
+	cd dist && zip scrapbook2zotero.zip scrapbook2zotero.exe
+
 
 # Run this if you are sure that scrapbook2zotero output is correct
 # pytest tests depend on samples/*.rdf files
@@ -45,3 +45,5 @@ build_samples:
 	./scrapbook2zotero.py scrapbook_test_data samples/standard_1_4_excluded.rdf --exclude 1 4
 	./scrapbook2zotero.py scrapbook_test_data samples/standard-no-collections.rdf --nocoll
 	./scrapbook2zotero.py scrapbook_test_data samples/standard-no-tags.rdf --notags
+	./scrapbook2zotero.py scrapbook_test_data samples/standard-no-dedup.rdf --nodedup
+

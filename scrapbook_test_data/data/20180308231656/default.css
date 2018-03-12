@@ -1,0 +1,11 @@
+/* Code tidied up by ScrapBook */
+.cse .gsc-control-cse, .gsc-control-cse { padding: 1em; width: auto; }
+.cse .gsc-control-wrapper-cse, .gsc-control-wrapper-cse { width: 100%; }
+.cse .gsc-branding, .gsc-branding { display: none; }
+.cse .gsc-control-cse, .gsc-control-cse { background-color: rgb(255, 255, 255); border: 1px solid rgb(255, 255, 255); }
+.cse .gsc-control-cse::after, .gsc-control-cse::after { content: "."; display: block; height: 0px; clear: both; visibility: hidden; }
+.cse .gsc-resultsHeader, .gsc-resultsHeader {  }
+table.gsc-search-box td.gsc-input { padding-right: 12px; }
+input.gsc-input { border-color: rgb(217, 217, 217); font-size: 13px; padding: 1px 6px; }
+.cse input.gsc-search-button, input.gsc-search-button { font-family: inherit; font-size: 11px; font-weight: bold; color: rgb(0, 0, 0); padding: 0px 8px; height: 20px; min-width: 54px; background-color: rgb(206, 206, 206); border: 1px solid rgb(102, 102, 102); border-radius: 2px; }
+.cse .gsc-tabHeader.gsc-tabhActive, .gsc-tabHeader.gsc-tabhActive { background-color: rgb(255, 255, 255); border-width: 2px 1px medium; border-style: solid solid none; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; border-color: rgb(255, 153, 0) rgb(233, 233, 233) -moz-use-text-color; }

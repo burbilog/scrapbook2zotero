@@ -1,0 +1,17 @@
+/* Code tidied up by ScrapBook */
+body { margin: 10px 4px; background-color: rgb(255, 255, 255); color: Black; }
+hr { color: Black; height: 2px; }
+.Interface { font-size: 20px; font-family: Verdana,"MS Sans Serif",sans-serif,Arial; letter-spacing: -2px; }
+h1, .Title { font-size: 20px; font-family: Verdana,"MS Sans Serif",sans-serif,Arial; }
+h1 { margin-top: -4px; margin-bottom: -2px; font-weight: normal; }
+h2, .subTitle { font-size: 17px; font-family: Verdana,"MS Sans Serif",sans-serif,Arial; font-weight: bold; }
+h3, .sub3Title { font-size: 14px; font-family: Verdana,"MS Sans Serif",sans-serif,Arial; font-weight: bold; }
+.Main, p, ul, ol, dl, td, input, textarea { font-size: 12px; font-family: Verdana,"MS Sans Serif",sans-serif,Arial; }
+.Small, .Small p, small { font-size: 11px; font-family: Verdana,"MS Sans Serif",sans-serif,Arial; }
+.subSmall { font-size: 9px; font-family: Verdana,"MS Sans Serif",sans-serif,Arial; }
+a:link { color: blue; }
+a:active { color: navy; }
+a:visited { color: navy; }
+a:hover { color: rgb(0, 128, 255); }
+a:focus { color: rgb(0, 128, 255); }
+ol ul, ul ul { list-style: outside none disc; }

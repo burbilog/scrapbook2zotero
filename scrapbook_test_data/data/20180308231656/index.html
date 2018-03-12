@@ -1,0 +1,675 @@
+<html>
+<head>
+<meta charset="UTF-8">
+
+<meta name="KeyWords&quot;" content="Информационные технологии, excel, задачи, решение прикладных задач, решение уравнений, прогнозирование, задачи оптимизации">
+<meta name="Robots" content="all">
+<meta name="Description" content="http://www.citforum.ru, Решение прикладных задач в Excel">
+<meta name="Document-state" content="Static">
+<title>Резервирование и восстановление с помощью программы RMAN</title>
+<link rel="stylesheet" href="main-2.css">
+<style>
+/* Code tidied up by ScrapBook */
+</style>
+
+<script src="about:blank" async=""></script><script type="text/javascript" src="about:blank"></script><link rel="stylesheet" href="default+ru.css" type="text/css"><link rel="stylesheet" href="default.css" type="text/css"><script src="about:blank" type="text/javascript"></script><style type="text/css">
+/* Code tidied up by ScrapBook */
+.gssb_c { border: 0px none; position: absolute; z-index: 989; }
+.gssb_e { border-width: 1px; border-style: solid; border-color: rgb(217, 217, 217) rgb(204, 204, 204) rgb(204, 204, 204); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: default; }
+.gssb_f { visibility: hidden; white-space: nowrap; }
+.gssb_e { border: 0px none; }
+input.gsc-input:-moz-placeholder { font-size: 14px; }
+input.gsc-input::-moz-placeholder { font-size: 14px; }
+input.gsc-input:focus:-moz-placeholder { color: transparent; }
+input.gsc-input:focus::-moz-placeholder { color: transparent; }
+.gssb_c { z-index: 5000; }
+.gssb_c > tbody > tr, .gssb_c > tbody > tr > td, .gssb_d, .gssb_d > tbody > tr, .gssb_d > tbody > tr > td, .gssb_e, .gssb_e > tbody > tr, .gssb_e > tbody > tr > td { padding: 0px; margin: 0px; border: 0px none; }
+</style></head>
+<body>
+<a name="top"></a>
+
+
+
+
+<!-- counters -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody><tr>
+<td><!--TopList COUNTER--><script src="about:blank" async="" type="text/javascript"></script><script language="JavaScript">/* Code removed by ScrapBook */</script><script language="JavaScript1.1">/* Code removed by ScrapBook */</script><script language="JavaScript1.2">/* Code removed by ScrapBook */</script><script language="JavaScript1.3">/* Code removed by ScrapBook */</script><script language="JavaScript">/* Code removed by ScrapBook */</script><img src="counter.gif" alt="" height="1" width="1"><!-- <noscript><img
+src="http://top.list.ru/counter?js=na;id=26978"
+height=1 width=1 alt=""></noscript><script language="JavaScript"><!--
+if(js>11)d.write('--'+'>')
+//--><!--TopList COUNTER--></td>
+<td><!--LiveInternet counter--><script language="JavaScript">/* Code removed by ScrapBook */</script><img src="hit.gif" alt="" height="1" width="1"><!--/LiveInternet--></td>
+<td><img src="top100.cnt" alt="" height="1" width="1" border="0"></td>
+</tr></tbody></table>
+<!-- end of counters -->
+
+
+
+<center><table width="990" cellpadding="0" cellspacing="0">
+<tbody><tr><td>
+
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr valign="bottom">
+  <td align="left"><a href="http://citforum.ru/"><img src="citlogo8.gif" alt="Logo" height="44" width="140" border="0"></a></td>
+
+      <td style="padding-bottom: 10px;" width="100%" align="right"><nobr><font size="2"><b>Море(!) аналитической информации!</b></font></nobr></td>
+    </tr>
+    </tbody></table>
+
+
+</td></tr>
+<tr><td>
+
+<table style="padding-top: 3px;" width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><td>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="931" border="0"></td></tr>
+<tr><td bgcolor="#daecd7"><img src="1x1.gif" alt="" height="3" width="1" border="0"></td></tr>
+<tr><td bgcolor="#008080">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="1">
+<tbody><tr>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/consulting/">IT-консалтинг</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/SE/">Software Engineering</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/programming/">Программирование</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/database/">СУБД</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/security/">Безопасность</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/internet/">Internet</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/nets/">Сети</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/operating_systems/">Операционные системы</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/hardware/">Hardware</a></font></td>
+<!--
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/faq/>FAQ (ЧаВО)</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/howto/>HOWTO</a></font></td>
+--> 
+</tr>
+</tbody></table>
+
+</td></tr>
+</tbody></table>
+
+</td></tr>
+<tr><td>
+<table style="padding-top: 3px;" width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr valign="top">
+
+<td style="padding: 0px 5px;" width="98%">
+
+
+<table style="border: 1px solid rgb(0, 128, 128); padding: 3px; margin-bottom: 5px; margin-left: auto; margin-right: auto; font-size: 15px;">
+<tbody><tr>
+<td>
+<a target="_blank" href="https://well-web.net/virt-private-serv">
+<img src="well-web.png" height="60" width="252" align="left">
+</a>
+</td><td style="padding: 0px 10px;">
+<a class="plain" target="_blank" href="https://well-web.net/virt-private-serv">
+Быстрые VPS — от 392 руб.<br>
+Бесплатное администрирование!<br>
+Защита от DDoS! Заходи!
+</a>
+</td></tr></tbody></table>
+
+
+
+
+
+<div class="document">
+
+
+
+<div align="right"><i>2003 г</i></div>
+
+<!-- start -->
+<h3 align="center">
+Резервирование и восстановление с помощью программы RMAN
+</h3>
+<p align="center">
+<a href="mailto:prz@ccas.ru">Владимир Пржиялковский</a>,<br>
+  координатор Евро-Азиатской Группы Пользователей Oracle,<br>
+  преподаватель <a href="http://www.interface.ru/training/c1.htm" target="_blank">УКЦ Interface Ltd.</a>
+  
+</p><div align="justify">
+
+<ul>
+  <li> <a href="#1">Введение</a></li>
+  <li> <a href="#2">Возможности RMAN</a></li>
+  <li><a href="#3"> Основные понятия</a></li>
+  <li> <a href="#4">Пример копирования и восстановления базы данных
+  </a>    <ul>
+      <li> <a href="#5">Упрощения в версии 9</a></li>
+    </ul>
+  </li>
+  <li><a href="#6"> Резервирование файлов базы данных
+  </a>    <ul>
+      <li><a href="#7"> Горячее полное резервирование БД</a></li>
+      <li> <a href="#8">Полное резервирование табличного пространства</a></li>
+      <li> <a href="#9">Полное резервирование отдельных файлов табличного пространства</a></li>
+      <li><a href="#10"> Резервирование временного табличного пространства</a></li>
+      <li><a href="#11"> Резервирование контрольного файла</a></li>
+      <li><a href="#12"> Резервирование оперативных файлов журнала</a></li>
+      <li><a href="#13"> Резервирование архивных копий журнала</a></li>
+      <li> <a href="#14">Резервирование изменений (неполное резервирование)</a></li>
+    </ul>
+  </li>
+  <li><a href="#15"> Выдача справочной информации</a></li>
+  <li><a href="#16"> Удаление резервных копий</a></li>
+  <li><a href="#17"> Восстановление данных
+  </a>    <ul>
+      <li><a href="#18"> Восстановление до момента сбоя («последнего момента»)</a></li>
+      <li><a href="#19"> Восстановление до указанного момента в прошлом</a></li>
+    </ul>
+  </li>
+  <li><a href="#20"> Автоматизация задач</a></li>
+</ul>
+<h2><a name="1">Введение</a></h2>
+<p>Программа <strong>RMAN</strong> появилась в версии 8 СУБД Oracle как единое для всех платформ
+  средство организации резервного копирования и восстановления данных на физическом
+  уровне. По отношению к традиционным базовым возможностям резервирования и восстановления
+  в Oracle, у программы RMAN есть некоторые преимущества, делающие ее в некоторых
+  ситуациях (например, при больших объемах данных) практически незаменимой. К
+  сожалению, наличие этих преимуществ не лишает RMAN и ряда существенных недостатков:
+  собственной системы понятий, собственного командного языка и интерфейса общения
+  с администратором. И то, и другое, и третье выполнено в плохих традициях разработчиков
+  Oracle – не вполне логично, запутано и непоследовательно, – что затрудняет
+  освоение этой программы. Назначение этой статьи – помочь перешагнуть через
+  эти недостатки ради выгод, которые можно извлечь из RMAN.</p>
+<h2><a name="2">Возможности RMAN</a></h2>
+<p>Возможности RMAN включают следующее:</p>
+<table width="96%" border="0">
+  <tbody><tr>
+    <td>-</td>
+    <td>выполнение полного резервирования и резервирования изменений</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>выполнение холодного/горячего резервирования, причем во втором случае
+      табличные пространства не переводятся в режим backup, что позволяет избежать
+    дополнительной нагрузки на журнал</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>обнаружение поврежденных блоков</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>параллельное выполнения операций ввода/вывода</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>автоматическое протоколирование операций копирования и восстановления</td>
+  </tr>
+</tbody></table>
+<p>Уровни выполнения резервного копирования/восстановления с помощью RMAN:</p>
+<ul>
+  <li> база данных</li>
+  <li> табличные пространства</li>
+  <li> файлы табличных пространств</li>
+  <li> служебные файлы БД (контрольные, архивные)</li>
+</ul>
+<p>Основные понятия</p>
+<p>В число основных понятий RMAN входят следующие:</p>
+<table width="75%" border="0">
+  <tbody><tr>
+    <td valign="top" width="3%">- </td>
+    <td valign="top" width="97%"><strong><em>Канал</em></strong><em> (channel)</em>. Серверный процесс, возникающий при установлении
+      связи с устройством ввода/вывода (диск или магнитная лента) для записи
+    или чтения файлов резервирования</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Целевая БД</em></strong><em> (target database)</em>. БД, для которой снимается резервная копия,
+    или которая восстанавливается по ранее снятой копии</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Каталог </em></strong><em>(recovery catalog)</em>. Отдельная схема в БД (чаще в отдельной БД),
+      которую можно заводить для хранения служебная информации о целевых базах,
+      снятых копиях и процедурах восстановления. Альтернативой каталогу является
+      индивидуальная работа с каждой целевой БД, когда служебная информация помещается
+    в контрольный файл этой БД.</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Копия</em></strong><em> (RMAN backup)</em>. Резервная копия какого-нибудь элемента БД, получаемая
+    командой RMAN backup.</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Резервный набор</em></strong><em> (backup set)</em>. Логически именует набор файлов, сформированных
+    во время резервного копирования.</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td valign="top"><strong><em>Резервный файл</em></strong><em> (backup piece)</em>. Двоичный файл с резервной информацией.</td>
+  </tr>
+</tbody></table>
+<p>Синтаксис командного языка RMAN в версии 9 имеет определенные отличия от версии
+  8, но все основные конструкции сохранены. Кроме этого, в RMAN для версии 9
+  допускается целый ряд упрощений записи команд. </p>
+<p>Возможность работы с RMAN включена также в последние версии OEM без необходимости
+  знания командного языка.</p>
+<p>В тексте ниже для лаконичности предпочтение будет отдаваться синтаксису версии
+  9. Кроме этого для простоты рассматривается работа без каталога RMAN.</p>
+<h2><a name="3">Пример копирования и восстановления базы данных</a></h2>
+<p>Простейший пример снятия резервной копии (холодное копирование – вся БД –
+  работа без каталога) иллюстрируется следующей последовательностью команд (здесь
+  команда CONNECT TARGET соединяет RMAN с СУБД версии 8):</p>
+<p>RMAN NOCATALOG<br>
+  RMAN&gt; CONNECT TARGET internal/oracle<br>
+  RMAN&gt; SHUTDOWN IMMEDIATE<br>
+  RMAN&gt; STARTUP MOUNT<br>
+  RMAN&gt; RUN {<br>
+  2&gt; ALLOCATE CHANNEL d1 TYPE DISK;<br>
+  3&gt; BACKUP FULL FORMAT 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%U.bus'<br>
+  4&gt; DATABASE;<br>
+  4&gt; }<br>
+  RMAN&gt; </p>
+<p>В каталоге D:\ORACLE\ORADATA\TEACHER\RMAN-BACKUP появился файл RMAN_ TEACHER
+  _02DGA6F0_1_1.BUS (реальное имя может варьироваться). Теперь можно удалить
+  файлы с табличными пространствами и выполнить восстановление:</p>
+<p>RMAN&gt; RUN {<br>
+  2&gt; ALLOCATE CHANNEL d1 TYPE DISK;<br>
+  3&gt; RESTORE DATABASE;<br>
+  4&gt; RECOVER DATABASE;<br>
+  5&gt; ALTER DATABASE OPEN;<br>
+  6&gt; }</p>
+<p>База восстановлена и открыта. </p>
+<h3><a name="4">Упрощения в версии 9</a></h3>
+<p>В версии RMAN для версии 9 описанное выше резервирование можно было бы выполнить
+  так:</p>
+<p>RMAN&gt; BACKUP DATABASE FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%U.bus';</p>
+<p>а восстановление так:</p>
+<p>RMAN&gt; RESTORE DATABASE;<br>
+  RMAN&gt; RECOVER DATABASE;<br>
+  RMAN&gt; ALTER DATABASE OPEN;</p>
+<p>Здесь подразумевается использование неявного канала по умолчанию, так что
+  объявлять его стало необязательно. </p>
+<p>Кроме этого в версии 9 появилась команда CONFIGURE, с помощью которой (помимо
+  прочего) можно связать с каналом направление и маску имени файлов для резервного
+  набора:</p>
+<p>RMAN&gt; CONFIGURE CHANNEL DEVICE TYPE DISK FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%U.bus';</p>
+<p>В этом случае команда снятия резервной копии может выглядеть еще проще:</p>
+<p>RMAN&gt; BACKUP DATABASE;</p>
+<h2><a name="5">Резервирование файлов базы данных</a></h2>
+<h3><a name="7">Горячее полное резервирование БД</a></h3>
+<p>Горячее резервирование </p>
+<table width="75%" border="0">
+  <tbody><tr>
+    <td valign="top">- </td>
+    <td>может выполняться в состоянии СУБД OPEN</td>
+  </tr>
+  <tr>
+    <td valign="top">- </td>
+    <td>может выполняться только при включенном режиме архивирования журналов</td>
+  </tr>
+</tbody></table>
+<p>Если выполнено и то, и другое, сами действия по резервированию выглядят как
+обычно. Пример в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP DATABASE FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%t_%U.bus';</p>
+<h3><a name="8">Полное резервирование табличного пространства</a></h3>
+<p>Пример в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP TABLESPACE system, users FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%t_%U.bus';</p>
+<h3><a name="9">Полное резервирование отдельных файлов табличного пространства</a></h3>
+<p>Пример в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP DATAFILE 1, 2;</p>
+<p>или</p>
+<p>RMAN&gt; BACKUP FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%d_%t_%U.bus'<br>
+  3&gt; 'd:\oracle\oradata\teacher\system01.dbf’,<br>
+  4&gt; 'd:\oracle\oradata\teacher\users01.dbf’;</p>
+<h3><a name="10">Резервирование временного табличного пространства</a></h3>
+<p>Если временное табличное пространство локально управляемо, оно автоматически
+  не резервируется. Восстанавливать (воссоздавать) при необходимости его придется
+  самостоятельно.</p>
+<h3><a name="11">Резервирование контрольного файла</a></h3>
+<p>Обычное резервирование контрольного файла приходится выполнять отдельно. Пример
+  явного резервирования в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP CURRENT CONTROLFILE;</p>
+<p>В версии 9 можно, однако, перевести RMAN в режим, когда копии контрольного
+  файла будут сниматься автоматически при всякой выдаче команд BACKUP или COPY:</p>
+<p>RMAN&gt; CONFIGURE CONTROLFILE AUTOBACKUP ON;</p>
+<h3><a name="12">Резервирование оперативных файлов журнала</a></h3>
+<p>Оперативные (онлайновые) файлы журнала автоматически не резервируются. Для
+  сохранения либо следует их</p>
+<p>а) копировать отдельно, либо<br>
+  б) перед полным резервированием БД отправлять в архив.</p>
+<h3><a name="13">Резервирование архивных копий журнала</a></h3>
+<p>Файлы архивных копий журнала резервируются всегда в отдельные от прочих файлы
+  резервного набора и в общем случае их нужно резервировать отдельной командой.
+  Пример в синтаксисе версии 9.0:</p>
+<p>RMAN&gt; BACKUP ARCHIVELOG ALL;</p>
+<p>Пример того, как в версии 9.0 архивные файлы можно включить в состав резервного
+  набора БД:</p>
+<p>RMAN&gt; BACKUP DATABASE FORMAT <br>
+  2&gt; 'd:\oracle\oradata\teacher\rman-backup\rman_%U.bus' PLUS ARCHIVELOG;</p>
+<h3><a name="14">Резервирование изменений (неполное резервирование)</a></h3>
+<p>Для резервирования изменений в Oracle используется традиционная многоуровневая
+  модель с конкретным числом уровней копии 5 (от 0 до 4). Точкой отсчета для
+  копирования изменений обязана стать снятая ранее полная копия БД уровня 0.</p>
+<p>Пример резервирования блоков, изменившихся со времени резервирования на уровнях
+  3, 2, 1 и 0 (разностное, «дифференциального» резервирование) в синтаксисе версии
+  9:</p>
+<p>RMAN&gt; BACKUP INCREMENTAL LEVEL 3 DATABASE;</p>
+<p>Пример резервирования блоков, изменившихся со времени последнего резервирования
+  на уровнях 2, 1 и 0 (разностно-накопительное, «кумулятивное» резервирование)
+  с пропуском табличных пространств, закрытых для записи (синтаксис версии 9):</p>
+<p>RMAN&gt; BACKUP INCREMENTAL LEVEL 3 CUMULATIVE DATABASE<br>
+  2&gt; SKIP READONLY;</p>
+<p>Разностно-накопительное (кумулятивное) резервирование уровня N отличается
+  от разностного (дифференциального) тем, что резервирует изменения произошедшие
+  после выполнения резервирования всех уровней &lt; N, в то время как просто
+  разностное – изменения, произошедшие после резервирования уровней &lt;= N. </p>
+<h2><a name="15">Выдача справочной информации</a></h2>
+<p>Выполняется специальными командами LIST и REPORT, а также разновидностью команды
+  RESTORE. Примеры приводятся ниже.</p>
+<p>Выдача подробного списка всех снятых копий:</p>
+<p>RMAN&gt; LIST BACKUP;</p>
+<p>Выдача списка резервных наборов, содержащих табличное пространство SYSTEM:</p>
+<p>RMAN&gt; LIST BACKUP OF TABLESPACE system;</p>
+<p>Вариант выдачи того же самого, но в обобщенном виде (версия 9):</p>
+<p>RMAN&gt; LIST BACKUP OF TABLESPACE system SUMMARY;</p>
+<p>Выдача информации о копиях, снятых с архивов журналов:</p>
+<p>RMAN&gt; LIST BACKUP OF ARCHIVELOG ALL;</p>
+<p>Выдача резервных копий, оказавшихся устаревшими:</p>
+<p>RMAN&gt; REPORT OBSOLETE;</p>
+<p>Выдача файлов с данными БД, для восстановления которых потребуются архивы
+  журналов 2-х дневной давности и более:</p>
+<p>RMAN&gt; REPORT NEED BACKUP DAYS 2 DATABASE;</p>
+<p>Те же сведения, но только для пространства SYSTEM:</p>
+<p>RMAN&gt; REPORT NEED BACKUP DAYS 2 TABLESPACE system;</p>
+<p>Выдача информации о том, годны ли файлы резервного набора для восстановления:</p>
+<p>RMAN&gt; RUN {ALLOCATE CHANNEL d1 TYPE DISK;<br>
+  2&gt; RESTORE DATABASE VALIDATE; }</p>
+<h2><a name="16">Удаление резервных копий</a></h2>
+<p>Выполняется командой DELETE. В простейшем варианте удаление устаревших копий
+  может выглядеть так:</p>
+<p>RMAN&gt; DELETE OBSOLETE;</p>
+<p>Обратите внимание, что RMAN удалил ненужные файлы резервных наборов. Вам не
+  нужно автоматизировать удаление старых файлов, как раньше!</p>
+<p>Файлы резервных наборов могут оказаться испорченными или поврежденными. Это
+  можно отметить в справочнике (в контрольном файле или в каталоге RMAN) с помощью
+  команды CROSSCHECK, в результате чего они будут помечены там как EXPIRED. Последующая
+  команда DELETE EXPIRED удалит ставшие ненужными из-за этого файлы:</p>
+<p>RMAN&gt; CROSSCHECK BACKUP;<br>
+  …<br>
+  RMAN&gt; DELETE EXPIRED BACKUP OF DATABASE;<br>
+  …<br>
+  RMAN&gt; DELETE BACKUP OF DATABASE;</p>
+<p>Более сложный пример удаления устаревших резервных копий:</p>
+<p>RMAN&gt; DELETE OBSOLETE RECOVERY WINDOW OF 14 DAYS;</p>
+<h2><a name="17">Восстановление данных</a></h2>
+<table width="82%" border="0">
+  <tbody><tr>
+    <td valign="top" align="right">- </td>
+    <td>Для восстановления данных целевая БД должна находиться в состоянии NOMOUNT/
+    MOUNT/ OPEN в зависимости от характера восстановления, например</td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td><blockquote>
+      <p>NOMOUNT: для восстановления контрольных файлов БД (фактически – СУБД) </p>
+    </blockquote>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td><blockquote>
+      <p>MOUNT: для восстановления БД целиком или табличного пространства SYSTEM</p>
+    </blockquote>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td><blockquote>
+      <p>OPEN: для восстановление табличных пространств, помимо SYSTEM (в этом
+          случае перед процедурой восстановления само табличное пространство потребуется
+        перевести в состояние OFFLINE).</p>
+    </blockquote>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td>Восстановление файлов (с данными и служебных) выполняется в RMAN командой
+    RESTORE.</td>
+  </tr>
+  <tr>
+    <td valign="top" align="right">- </td>
+    <td>Восстановление данных выполняется либо в RMAN, либо в SQL*Plus командами
+    RECOVER при условии наличия восстановленных файлов.</td>
+  </tr>
+</tbody></table>
+<h3><a name="18">Восстановление до момента сбоя («последнего момента»)</a></h3>
+<p>Некоторые примеры восстановления:</p>
+<p>RMAN&gt; RECOVER DATABASE;</p>
+<p>RMAN&gt; RECOVER TABLESPACE users;</p>
+<p>RMAN&gt; RECOVER DATAFILE 'd:\oracle\oradata\teacher\users01.dbf’;</p>
+<p>RMAN&gt; RESTORE CONTROLFILE;</p>
+<p>RMAN&gt; RUN {<br>
+  2&gt; SET ARCHIVELOG DESTINATION TO ‘d:\oracle\oradata\archive’;<br>
+  3&gt; RESTORE ARCHIVELOG ALL; }</p>
+<p>Восстановление пространств, закрытых на запись:</p>
+<p>RMAN&gt; SQL "ALTER TABLESPACE lookup_data OFFLINE";<br>
+  RMAN&gt; RECOVER TABLESPACE lookup_data;<br>
+  RMAN&gt; SQL "ALTER TABLESPACE lookup_data ONLINE";</p>
+<h3><a name="19">Восстановление до указанного момента в прошлом</a></h3>
+<p>БД, работающую в режиме архивирования журнала, можно восстанавливать до определенного
+  указанного момента с помощью фраз UNTIL {TIME … | SCN … | SEQUENCE … THREAD…}.
+  Пример:</p>
+<p>RMAN&gt; RESTORE DATABASE;	# восстановили файлы<br>
+  RMAN&gt; RECOVER DATABASE UNTIL SCN 375831;	# восстановили БД<br>
+  RMAN&gt; ALTER DATABASE OPEN RESETLOGS;	# сбросили журнал</p>
+<p>Восстановление БД (вторая и третья строчки выше) можно выполнить и в SQL*Plus: </p>
+<p>SQL &gt; RECOVER DATABASE UNTIL CANCEL;<br>
+  SQL&gt; ALTER DATABASE OPEN RESETLOGS;</p>
+<p>При таком восстановлении необходимо сбросить онлайновый журнал. После этого,
+  как и при традиционном восстановлении со сбросом журналов (RESETLOGS), необходимо
+  снять полную копию БД, так как с этого момента восстановление с более ранних
+  резервных копий станет невозможным из-за того, что история журнальных записей
+  прерывается.</p>
+<h2><a name="20">Автоматизация задач</a></h2>
+<p>Автоматизировать выполнение задач с RMAN можно как внешними средствами (язык
+  командной оболочки), так и внутренними. Внутренние средства RMAN допускают
+  указание файла сценария при вызове этой программы, а также организацию хранимого
+  сценария.</p>
+<p>Пусть в файле listbackup.rcm находятся строки:</p>
+<p>CONNECT TARGET /<br>
+  LIST BACKUP;<br>
+  EXIT</p>
+<p>Тогда следующие два эквивалентные по результату обращения в ОС приведут ко
+  входу в RMAN, выполнению этого сценария и выходу:</p>
+<p>RMAN CMDFILE=listback.rcm NOCATALOG</p>
+<p>RMAN @listback.rcm NOCATALOG</p>
+<p>При использовании каталога RMAN возможно к тому же использование хранимого
+  сценария:</p>
+<p>RMAN&gt; REPLACE SCRIPT reportobsolete { REPORT OBSOLETE; }</p>
+<p>Пример обращения в хранимому в каталоге сценарию:</p>
+<p>RMAN&gt; RUN { EXECUTE SCRIPT reportobsolete; }</p>
+</div>
+<!--end-->
+</div>
+
+<center>
+
+
+</center>
+
+</td>
+
+
+<td>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="right"><tbody><tr>
+<td bgcolor="#008080"><img src="1x1.gif" height="1" width="1" border="0"></td>
+<td bgcolor="#daecd7"><img src="1x1.gif" height="1" width="2" border="0"></td>
+<td>
+
+<table border="0" cellpadding="0" cellspacing="0">
+
+<tbody><tr><td><div style="border: 1px solid rgb(0, 128, 128); padding: 0px 5px; margin-bottom: 5px;">
+<a class="plain" target="_blank" href="https://hyperhost.ua/" rel="nofollow">
+<img alt="хостинг сайтов" title="хостинг сайтов" src="hyperhost.jpg" height="50" width="100" align="right"></a>
+
+<p><a class="plain" target="_blank" href="https://hyperhost.ua/" rel="nofollow">ГиперХост — хостинг сайтов который Вы искали.</a>
+
+</p><p><a class="plain" target="_blank" href="https://hyperhost.ua/" rel="nofollow">Виртуальный хостинг, Аренда VPS серверов,
+Регистрация доменных имен, SSL сертификаты</a>
+
+</p><p><a class="plain" target="_blank" href="https://hyperhost.ua/" rel="nofollow">Все для Вашего сайта тут!</a>
+</p></div>
+</td></tr>
+<tr><td bgcolor="#ffffff">
+<p><b>Новости мира IT:</b>
+</p><ul class="column">
+
+<li>07.03 - <a href="http://citforum.ru/news/38541/">Релиз web-браузера Chrome 65 </a></li><li>07.03 - <a href="http://citforum.ru/news/38540/">Mercedes-Maybach S-Class станет первым автомобилем с «умными» фарами Digital Light</a></li><li>07.03 - <a href="http://citforum.ru/news/38539/">Гибрид робомобиля и дрона в представлении Audi, Italdesign и Airbus</a></li><li>07.03 - <a href="http://citforum.ru/news/38538/">Google Lens доступен на всех Android-устройствах</a></li><li>07.03 - <a href="http://citforum.ru/news/38537/">ARM представила новые ускорители Mali G52 и G31</a></li><li>06.03 - <a href="http://citforum.ru/news/38535/">Доступен шестой кандидат в релизы браузера Otter</a></li><li>06.03 - <a href="http://citforum.ru/news/38534/">Объявлено о прекращение разработки PhantomJS</a></li><li>06.03 - <a href="http://citforum.ru/news/38533/">Insider-сборки Windows 10 Redstone 4 получили финальный набор функций</a></li><li>05.03 - <a href="http://citforum.ru/news/38532/">Оператором Единой биометрической системы назначен «Ростелеком»</a></li><li>05.03 - <a href="http://citforum.ru/news/38531/">«Ростелеком» приобрёл разработчика мобильной платформы Sailfish OS</a></li><li>05.03 - <a href="http://citforum.ru/news/38530/">Продемонстрирован передовой VR-сервис на базе 5G-технологий</a></li><li>05.03 - <a href="http://citforum.ru/news/38529/">Snap готовит новые варианты «умных» очков Spectacles</a></li><li>05.03 - <a href="http://citforum.ru/news/38528/">GlobalFoundries предлагает эталонные 22-нм контроллеры с eMRAM</a></li><li>05.03 - <a href="http://citforum.ru/news/38527/">RED и Sharp объединили усилия для разработки телевизионной 8К-панели</a></li><li>02.03 - <a href="http://citforum.ru/news/38524/">Фонд свободного ПО опубликовал финансовый отчёт по итогам 2016 года</a></li><li>02.03 - <a href="http://citforum.ru/news/38523/">Производство с нормами 5 нм и сканерами EUV может быть отложено</a></li><li>02.03 - <a href="http://citforum.ru/news/38522/">MWC 2018: концепт смарт-куртки с подключаемыми модулями от Nokia и&nbsp;Kolon</a></li><li>02.03 - <a href="http://citforum.ru/news/38521/">MWC 2018: Haier продемонстрировала смарт-часы Asu со встроенным проектором</a></li><li>02.03 - <a href="http://citforum.ru/news/38519/">Facebook активировала функцию распознавания лиц</a></li><li>02.03 - <a href="http://citforum.ru/news/38518/">Google обратилась к сообществу за советами по улучшению программной части смартфонов Pixel</a>
+
+</li></ul>
+<p><a target="_blank" href="http://citforum.ru/news/"><b>Архив новостей</b></a>
+
+</p><p align="right"><a href="http://citforum.ru/news/rss/news.xml"><img src="xml_rss.gif" height="14" width="36" border="0"></a>
+</p></td></tr>
+
+<tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="1" border="0"></td></tr>
+<tr><td bgcolor="#daecd7"><img src="1x1.gif" alt="" height="3" width="1" border="0"></td></tr>
+<tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="1" border="0"></td></tr>
+<tr><td style="padding-left: 5px; min-width: 240px;"><p><b>Последние комментарии:</b>	</p><div class="comments_menu">
+		<a href="http://citforum.ru/news/37038/#comments">Поддержка Windows Vista завершится 11 апреля</a>&nbsp;(6)<br>
+		<div class="comments_menu_date">Вторник 06.03, 15:29		</div>
+	</div>	<div class="comments_menu">
+		<a href="http://citforum.ru/news/38473/#comments">За две недели загружено около миллиона копий LibreOffice 6.0</a>&nbsp;(3)<br>
+		<div class="comments_menu_date">Вторник 06.03, 15:16		</div>
+	</div>	<div class="comments_menu">
+		<a href="http://citforum.ru/news/38533/#comments">Insider-сборки Windows 10 Redstone 4 получили финальный набор функций</a>&nbsp;(1)<br>
+		<div class="comments_menu_date">Вторник 06.03, 15:14		</div>
+	</div>	<div class="comments_menu">
+		<a href="http://citforum.ru/news/38523/#comments">Производство с нормами 5 нм и сканерами EUV может быть отложено</a>&nbsp;(1)<br>
+		<div class="comments_menu_date">Пятница 02.03, 19:35		</div>
+	</div>	<div class="comments_menu">
+		<a href="http://citforum.ru/news/38365/#comments">В Голландии тестируют беспилотный грузовой поезд</a>&nbsp;(2)<br>
+		<div class="comments_menu_date">Пятница 02.03, 16:49		</div>
+	</div>	<div class="comments_menu">
+		<a href="http://citforum.ru/news/38502/#comments">Калифорния разрешила испытания беспилотных автомобилей без людей в салоне</a>&nbsp;(2)<br>
+		<div class="comments_menu_date">Пятница 02.03, 16:43		</div>
+	</div>	<div class="comments_menu">
+		<a href="http://citforum.ru/news/38497/#comments">В ChromeOS появится возможность запуска виртуальных машин с Linux</a>&nbsp;(1)<br>
+		<div class="comments_menu_date">Вторник 27.02, 07:46		</div>
+	</div>	<div class="comments_menu">
+		<a href="http://citforum.ru/news/38456/#comments">Смартфоны Nokia обогнали по продажам Google, HTC, OnePlus и Sony</a>&nbsp;(1)<br>
+		<div class="comments_menu_date">Среда 14.02, 11:45		</div>
+	</div>	<div class="comments_menu">
+		<a href="http://citforum.ru/news/38431/#comments">Apple запатентовала стилус, которым можно рисовать в воздухе</a>&nbsp;(2)<br>
+		<div class="comments_menu_date">Вторник 13.02, 15:06		</div>
+	</div>	<div class="comments_menu">
+		<a href="http://citforum.ru/gazeta/43/#comments">Автоматизация документооборота. Аутсорсинг.</a>&nbsp;(7)<br>
+		<div class="comments_menu_date">Понедельник 12.02, 06:38		</div>
+	</div></td></tr>
+
+<tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="1" border="0"></td></tr>
+<tr><td bgcolor="#daecd7"><img src="1x1.gif" alt="" height="3" width="1" border="0"></td></tr>
+<tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="1" border="0"></td></tr>
+<tr><td><script>/* Code removed by ScrapBook */</script>
+<div id="___gcse_0"><div class="gsc-control-cse gsc-control-cse-ru"><div dir="ltr" class="gsc-control-wrapper-cse"><form accept-charset="utf-8" class="gsc-search-box"><table class="gsc-search-box" cellpadding="0" cellspacing="0"><tbody><tr><td class="gsc-input"><input placeholder="Пользовательский поиск" style="outline: medium none; background: rgb(255, 255, 255) url(&quot;googlelogo_lightgrey_46x16dp.png&quot;) no-repeat scroll left center; text-indent: 48px;" spellcheck="false" dir="ltr" id="gsc-i-id1" title="поиск" name="search" class=" gsc-input" size="10" autocomplete="off" type="text"></td><td class="gsc-search-button"><input title="поиск" class="gsc-search-button" value="Поиск" type="button"></td><td class="gsc-clear-button"><div title="удалить результаты" class="gsc-clear-button">&nbsp;</div></td></tr></tbody></table><table class="gsc-branding" cellpadding="0" cellspacing="0"><tbody><tr><td class="gsc-branding-user-defined"></td><td class="gsc-branding-text"><div class="gsc-branding-text">технология</div></td><td class="gsc-branding-img"><img srcset="googlelogo_grey_46x15dp_001.png 2x" class="gsc-branding-img" src="googlelogo_grey_46x15dp.png"></td></tr></tbody></table></form><div class="gsc-results-wrapper-nooverlay"><div class="gsc-tabsAreaInvisible"><div class="gsc-tabHeader gsc-inline-block gsc-tabhActive">Пользовательский поиск</div><span class="gs-spacer"> </span></div><div class="gsc-tabsAreaInvisible"></div><div class="gsc-above-wrapper-area-invisible"><table class="gsc-above-wrapper-area-container" cellpadding="0" cellspacing="0"><tbody><tr><td class="gsc-result-info-container"><div class="gsc-result-info-invisible"></div></td></tr></tbody></table></div><div class="gsc-adBlockInvisible"></div><div class="gsc-wrapper"><div class="gsc-adBlockInvisible"></div><div class="gsc-resultsbox-invisible"><div class="gsc-resultsRoot gsc-tabData gsc-tabdActive"><table class="gsc-resultsHeader" cellpadding="0" cellspacing="0"><tbody><tr><td class="gsc-twiddleRegionCell"><div class="gsc-twiddle"><div class="gsc-title">Интернет</div></div><div class="gsc-stats"></div><div class="gsc-results-selector gsc-all-results-active"><div title="показать один результат" class="gsc-result-selector gsc-one-result">&nbsp;</div><div title="показать другие результаты" class="gsc-result-selector gsc-more-results">&nbsp;</div><div title="показать все результаты" class="gsc-result-selector gsc-all-results">&nbsp;</div></div></td><td class="gsc-configLabelCell"></td></tr></tbody></table><div><div class="gsc-expansionArea"></div></div></div></div></div></div></div></div></div>
+</td></tr>
+
+
+
+<tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="1" border="0"></td></tr>
+<tr><td bgcolor="#daecd7"><img src="1x1.gif" alt="" height="3" width="1" border="0"></td></tr>
+<tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="1" border="0"></td></tr>
+<tr><td style="padding: 5px; background-color: lightyellow;">
+<ul class="column" style="font-size: 12px;">
+<li><a href="http://citforum.ru/news/38536/">Chipster.ru – то, что нужно для любителей электроники и робототехники</a>
+</li><li><a href="http://citforum.ru/news/38526/">Разработка и продвижение интернет-магазинов</a>
+</li><li><a href="http://citforum.ru/news/38525/">Интернет-магазины: разработка и продвижение</a>
+</li></ul>
+</td></tr>
+
+
+</tbody></table>
+
+</td>
+<td bgcolor="#daecd7"><img src="1x1.gif" height="1" width="2" border="0"></td>
+<td bgcolor="#008080"><img src="1x1.gif" height="1" width="1" border="0"></td>
+</tr></tbody></table>
+
+</td>
+ <!--no_right-->
+
+</tr>
+</tbody></table>
+</td>
+
+</tr></tbody></table>
+
+<p>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="931" border="0"></td></tr>
+<tr><td bgcolor="#daecd7"><img src="1x1.gif" alt="" height="3" width="1" border="0"></td></tr>
+<tr><td bgcolor="#008080">
+
+<table width="100%" border="0" cellpadding="3" cellspacing="1">
+<tbody><tr>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/consulting/">IT-консалтинг</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/SE/">Software Engineering</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/programming/">Программирование</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/database/">СУБД</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/security/">Безопасность</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/internet/">Internet</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/nets/">Сети</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/operating_systems/">Операционные системы</a></font></td>
+<td align="center" bgcolor="#F4F9F3"><font size="-1"><a class="head" href="http://citforum.ru/hardware/">Hardware</a></font></td>
+<!--
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/faq/>FAQ (ЧаВО)</a></font></td>
+<td bgcolor=#F4F9F3 align=center><font size=-1><a class=head href=/howto/>HOWTO</a></font></td>
+--> 
+</tr>
+</tbody></table>
+
+</td></tr>
+</tbody></table>
+
+</p><p>
+
+<table width="100%">
+<tbody><tr><td>
+<a href="http://citforum.ru/about/"><font size="2">Информация для рекламодателей</font></a> 
+</td><td><font size="2">PR-акции, размещение рекламы — <a href="mailto:adv@citforum.ru">adv@citforum.ru</a>,
+<br>тел.&nbsp;<a href="tel:+7-985-1945361">+7&nbsp;985&nbsp;1945361</a></font>
+</td><td align="right"><font size="2">Пресс-релизы — <a href="mailto:pr@citforum.ru">pr@citforum.ru</a></font>
+</td></tr></tbody></table>
+
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><img src="1x1.gif" alt="" height="5" width="1" border="0"></td></tr>
+<tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="1" border="0"></td></tr>
+<tr><td bgcolor="#daecd7"><img src="1x1.gif" alt="" height="3" width="1" border="0"></td></tr></tbody></table>
+
+<table width="100%" border="0" cellpadding="4" cellspacing="0"><tbody><tr>
+<td><font size="2">
+<a href="mailto:webmaster@citforum.ru">Обратная связь</a><br>
+<a href="http://citforum.ru/how.shtml">Информация для авторов</a>
+
+</font></td>
+
+<td><a href="http://top100.rambler.ru/cgi-bin/stats_top100.cgi?13078"><img src="banner-88x31-rambler-darkblue2.gif" alt="Rambler's Top100" height="31" width="88" border="0"></a></td>
+<td><!--TopList LOGO--><a target="_top" href="http://top.list.ru/jump?from=26978"><img src="counter_001.gif" alt="TopList" height="31" width="88" border="0"></a><!--TopList LOGO--></td>
+<td>
+<!--LiveInternet logo--><a href="http://www.liveinternet.ru/click" target="_blank"><img src="logo.gif" alt="liveinternet.ru: показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня" height="31" width="88" border="0"></a><!--/LiveInternet-->
+</td>
+
+<td valign="bottom" align="right"><font face="Arial, sans-serif" size="1">This Web server launched on February 24, 1997<br>
+Copyright © 1997-2000 CIT, © 2001-2015 <a href="http://citforum.ru/info.shtml">CIT Forum</a></font></td>
+</tr></tbody></table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td bgcolor="#daecd7"><img src="1x1.gif" alt="" height="3" width="1" border="0"></td></tr><tr><td bgcolor="#008080"><img src="1x1.gif" alt="" height="1" width="1" border="0"></td></tr></tbody></table>
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td align="center"><font face="Arial, sans-serif" size="1"><b>Внимание!</b> Любой из материалов, опубликованных на этом сервере, не может быть  воспроизведен в какой бы то ни было форме и какими бы то ни было средствами без письменного разрешения владельцев авторских прав. <a href="http://citforum.ru/copyright.shtml">Подробнее...</a></font></td></tr></tbody></table>
+
+
+</p></td></tr></tbody></table></center>
+<table class="gstl_50 gssb_c" style="width: 197px; display: none; top: 2157px; left: 743px; position: absolute;" cellpadding="0" cellspacing="0"><tbody><tr><td class="gssb_f"></td><td style="width: 100%;" class="gssb_e"></td></tr></tbody></table></body>
+</html>

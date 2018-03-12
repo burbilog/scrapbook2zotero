@@ -1,0 +1,14 @@
+/* Code tidied up by ScrapBook */
+body { color: black; background: white none repeat scroll 0% 0%; margin: 0px; }
+a { color: rgb(0, 104, 144); }
+a:active { color: rgb(128, 0, 0); }
+a:visited { color: rgb(0, 56, 96); }
+.document { text-align: justify; }
+a.head { font-family: Times; font-size: 9pt; }
+A.plain { text-decoration: none; color: navy; }
+H2 { font-family: Arial Cyr,Arial,sans-serif; }
+H3 { text-align: left; font-family: Arial Cyr,Arial,sans-serif; font-size: 16pt; }
+ul.column { list-style: inside none disc; padding: 0px; margin: 0px; }
+.comments_menu { font-size: 14px; padding-bottom: 8px; }
+.comments_menu a { text-decoration: none; }
+.comments_menu_date { text-align: right; }

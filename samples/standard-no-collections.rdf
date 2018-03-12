@@ -152,4 +152,60 @@ xmlns:bib="http://purl.org/net/biblio#">
         <dc:title>11_beauchamp.pdf</dc:title>
         <link:type>application/pdf</link:type>
     </z:Attachment>
+    <bib:Document rdf:about="http://citforum.ru/database/oracle/rman/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_20180308231656"/>
+        <dc:subject></dc:subject>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://citforum.ru/database/oracle/rman/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-03-08 23:16:56</dcterms:dateSubmitted>
+        <dc:title>Резервирование и восстановление с помощью программы RMAN</dc:title>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_20180308231656">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20180308231656/index.html"/>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://citforum.ru/database/oracle/rman/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-03-08 23:16:56</dcterms:dateSubmitted>
+        <dc:title>Резервирование и восстановление с помощью программы RMAN</dc:title>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="file:///home/rm/Zotero/storage/ILIVIGZE/index.html">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_20180308231918"/>
+        <dc:subject></dc:subject>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>file:///home/rm/Zotero/storage/ILIVIGZE/index.html</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-03-08 23:19:18</dcterms:dateSubmitted>
+        <dc:title>Резервирование и восстановление с помощью программы RMAN (2)</dc:title>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_20180308231918">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20180308231918/index.html"/>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>file:///home/rm/Zotero/storage/ILIVIGZE/index.html</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-03-08 23:19:18</dcterms:dateSubmitted>
+        <dc:title>Резервирование и восстановление с помощью программы RMAN (2)</dc:title>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
 </rdf:RDF>

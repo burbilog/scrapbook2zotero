@@ -5,6 +5,34 @@ xmlns:dcterms="http://purl.org/dc/terms/"
 xmlns:link="http://purl.org/rss/1.0/modules/link/"
 xmlns:dc="http://purl.org/dc/elements/1.1/"
 xmlns:bib="http://purl.org/net/biblio#">
+    <bib:Document rdf:about="http://www.popadancev.net/pulsejet/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_20180222112456"/>
+        <dc:subject></dc:subject>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.popadancev.net/pulsejet/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:24:56</dcterms:dateSubmitted>
+        <dc:title>ПуВРД « Попаданцев.нет</dc:title>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_20180222112456">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20180222112456/index.html"/>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.popadancev.net/pulsejet/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:24:56</dcterms:dateSubmitted>
+        <dc:title>ПуВРД « Попаданцев.нет</dc:title>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
     <bib:Document rdf:about="http://www.popadancev.net/laser/">
         <z:itemType>webpage</z:itemType>
         <dcterms:isPartOf>
@@ -58,6 +86,34 @@ xmlns:bib="http://purl.org/net/biblio#">
         </dc:identifier>
         <dcterms:dateSubmitted>2018-02-22 11:55:34</dcterms:dateSubmitted>
         <dc:title>Что такое любительская лингвистика - ПОЛИТ.РУ</dc:title>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="http://linuxpitstop.com/install-seamonkey-on-ubuntu/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_20180222115430"/>
+        <dc:subject>Второй корневой каталог</dc:subject>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://linuxpitstop.com/install-seamonkey-on-ubuntu/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:54:30</dcterms:dateSubmitted>
+        <dc:title>How to install SeaMonkey On Ubuntu Linux  LinuxPitStop</dc:title>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_20180222115430">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="scrapbook_test_data/data/20180222115430/index.html"/>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://linuxpitstop.com/install-seamonkey-on-ubuntu/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2018-02-22 11:54:30</dcterms:dateSubmitted>
+        <dc:title>How to install SeaMonkey On Ubuntu Linux  LinuxPitStop</dc:title>
         <z:linkMode>1</z:linkMode>
         <link:type>text/html</link:type>
     </z:Attachment>
@@ -137,7 +193,7 @@ xmlns:bib="http://purl.org/net/biblio#">
             </dcterms:URI>
         </dc:identifier>
         <dcterms:dateSubmitted>2018-03-08 23:19:18</dcterms:dateSubmitted>
-        <dc:title>Резервирование и восстановление с помощью программы RMAN (2)</dc:title>
+        <dc:title>Резервирование и восстановление с помощью программы RMAN</dc:title>
     </bib:Document>
     <z:Attachment rdf:about="#item_20180308231918">
         <z:itemType>attachment</z:itemType>
@@ -148,7 +204,7 @@ xmlns:bib="http://purl.org/net/biblio#">
             </dcterms:URI>
         </dc:identifier>
         <dcterms:dateSubmitted>2018-03-08 23:19:18</dcterms:dateSubmitted>
-        <dc:title>Резервирование и восстановление с помощью программы RMAN (2)</dc:title>
+        <dc:title>Резервирование и восстановление с помощью программы RMAN</dc:title>
         <z:linkMode>1</z:linkMode>
         <link:type>text/html</link:type>
     </z:Attachment>

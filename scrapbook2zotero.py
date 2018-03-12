@@ -47,7 +47,7 @@ import rdflib.plugins.parsers.rdfxml
 
 
 # SemVer
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 def debug(msg):
     """ Print debug message if --debug option was given """
@@ -302,7 +302,29 @@ def addchain(chain, name):
         return chain + '/' + name
     return ''
 
-def export_node(node, source_dir, tagchain, counter):
+class Deduper(object): # pylint: disable=too-few-public-methods
+    """ Deduplication mechanism """
+    def __init__(self):
+        self.dupes = {}
+    def getdupnum(self, title):
+        """ Get duplication number
+
+        Args:
+            title: item title
+        Returns:
+            number of dupes in parentheses as unicode string
+            or u'' if no dupe.
+        """
+        # Honor --nodedup flag
+        if Args.disable_dedup:
+            return u''
+        if title in self.dupes:
+            self.dupes[title] += 1
+            return u' (' + unicode(str(self.dupes[title])) + u')'
+        self.dupes[title] = 1
+        return u''
+
+def export_node(node, source_dir, tagchain, counter, deduplicator):
     """ Export node
 
     Args:
@@ -310,6 +332,7 @@ def export_node(node, source_dir, tagchain, counter):
         source_dir: directory to scrapbook data
         tagchain: a chain of tags
         counter: count unique URLs to match items count during import
+        deduplicator: deduplicator object
     Returns:
         String with all items as RDF entries
     """
@@ -319,7 +342,8 @@ def export_node(node, source_dir, tagchain, counter):
     if node.type == 'folder':
         debug("exporting folder '%s'" % node.nodeid)
         for subnode in node.children:
-            result += export_node(subnode, source_dir, addchain(tagchain, node.name), counter)
+            result += export_node(subnode, source_dir, addchain(tagchain, node.name),
+                                  counter, deduplicator)
     elif node.type == 'note':
         sys.stderr.write("ERROR: 'note' type is not implemented, can't process entry"
                          "'%s'. Skipping.\n" % node.nodeid)
@@ -355,6 +379,9 @@ def export_node(node, source_dir, tagchain, counter):
             node.name = ampersand(node.source)
         if node.source == '':
             node.source = node.nodeid
+
+        # Deduplicate
+        node.name = node.name + deduplicator.getdupnum(node.name)
 
         # Check for PDF files and add them as separate entries
         pdfs = u""
@@ -445,6 +472,8 @@ without several minutes), note last record number and exclude it with
                         help="Disable export of collections")
     parser.add_argument('--notags', action='store_true',
                         help="Disable export of tags")
+    parser.add_argument('--nodedup', action='store_true',
+                        help="Disable deduplication")
     parsed = parser.parse_args(argv)
     Args.debug = parsed.debug
     Args.exclude = parsed.exclude
@@ -452,6 +481,7 @@ without several minutes), note last record number and exclude it with
     Args.rdffilename = parsed.rdffilename
     Args.disable_collections = parsed.nocoll
     Args.disable_tags = parsed.notags
+    Args.disable_dedup = parsed.nodedup
 
 def main(argv):
     """ Main as function, useful to run test from py.test with command line args
@@ -473,8 +503,8 @@ def main(argv):
         except IOError:
             sys.stderr.write("ERROR: can't open file '%s' to write.\n" % Args.rdffilename)
             exit(-1)
-    counter = Counter()
-    allitems = export_node(root, Args.scrapbookdir, None, counter)
+    #counter = Counter()
+    #allitems = export_node(root, Args.scrapbookdir, None, counter)
     # write everything
     filehandle.write(u"""<rdf:RDF
 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -483,7 +513,8 @@ xmlns:dcterms="http://purl.org/dc/terms/"
 xmlns:link="http://purl.org/rss/1.0/modules/link/"
 xmlns:dc="http://purl.org/dc/elements/1.1/"
 xmlns:bib="http://purl.org/net/biblio#">""")
-    filehandle.write(allitems)
+    filehandle.write(export_node(root, Args.scrapbookdir,
+                                 None, Counter(), Deduper()))
     if not Args.disable_collections:
         filehandle.write(export_collections(root))
     filehandle.write(u"\n</rdf:RDF>")
