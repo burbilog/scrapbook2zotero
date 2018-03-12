@@ -11,9 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Deduplication mechanism with `--nodedup` flag.
 - A test for deduplication
 - CHANGELOG.md file
-- Better versioning
 ### Changed
 - Simplified running tests
+- Better versioning
 
 ## [1.0.0] - 2018-03-07
 ### Added
