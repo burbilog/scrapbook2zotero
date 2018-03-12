@@ -33,9 +33,14 @@ clean:
 w:
 	git commit -a -m "working..."
 
-win32:
+win32: build32 zip32
+
+build32:
 	wine pyinstaller --onefile scrapbook2zotero.py
-	cd dist && zip scrapbook2zotero.zip scrapbook2zotero.exe
+
+zip32:
+	VERSION=`./get-version.sh`
+	cd dist && zip scrapbook2zotero-v$(VERSION).zip scrapbook2zotero.exe
 
 
 # Run this if you are sure that scrapbook2zotero output is correct
@@ -47,3 +52,5 @@ build_samples:
 	./scrapbook2zotero.py scrapbook_test_data samples/standard-no-tags.rdf --notags
 	./scrapbook2zotero.py scrapbook_test_data samples/standard-no-dedup.rdf --nodedup
 
+current-version:
+	@echo Current version is `./get-version.sh`

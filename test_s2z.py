@@ -62,13 +62,13 @@ def test_1_reading_scrapbook_rdf():
 def test_2_standard_run():
     """ Testing default output """
     run_main_and_compare(["scrapbook_test_data", "tmp/test.rdf"],
-        "samples/standard.rdf", "tmp/test.rdf")
+                         "samples/standard.rdf", "tmp/test.rdf")
 
 
 def test_3_exclude():
     """ Testing --exclude feature, excluding items #1 and #4 """
     run_main_and_compare(["scrapbook_test_data", "tmp/test-exclude.rdf", "--exclude", "1", "4"],
-        "samples/standard_1_4_excluded.rdf", "tmp/test-exclude.rdf")
+                         "samples/standard_1_4_excluded.rdf", "tmp/test-exclude.rdf")
 
 def test_4_win32():
     """ Test win32 build
@@ -90,14 +90,14 @@ def test_4_win32():
 def test_5_nocoll():
     """ Testing disabling of collection exports (--nocoll flag) """
     run_main_and_compare(["scrapbook_test_data", "tmp/test-nocoll.rdf", "--nocoll"],
-        "samples/standard-no-collections.rdf", "tmp/test-nocoll.rdf")
+                         "samples/standard-no-collections.rdf", "tmp/test-nocoll.rdf")
 
 def test_6_notags():
     """ Testing disabling of collection exports (--notags flag) """
     run_main_and_compare(["scrapbook_test_data", "tmp/test-notags.rdf", "--notags"],
-        "samples/standard-no-tags.rdf", "tmp/test-notags.rdf")
+                         "samples/standard-no-tags.rdf", "tmp/test-notags.rdf")
 
 def test_7_nodedup():
     """ Testing disabling of deduplication (--nodedup flag) """
     run_main_and_compare(["scrapbook_test_data", "tmp/test-nodedup.rdf", "--nodedup"],
-        "samples/standard-no-dedup.rdf", "tmp/test-nodedup.rdf")
+                         "samples/standard-no-dedup.rdf", "tmp/test-nodedup.rdf")
