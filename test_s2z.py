@@ -30,6 +30,25 @@ import os
 import subprocess
 import scrapbook2zotero
 
+def run_main_and_compare(args, samplefname, tmpfname):
+    """ run main with specified args and compare output files
+    Args:
+        args: args to pass to main
+        samplefname: file containing sample output
+        tmpfname: file containing results of running main
+
+    If you change output format or contents of scrapbook_test_data,
+    then rebuild samples:
+
+        make build_samples
+    """
+    try:
+        os.remove(tmpfname)
+    except OSError:
+        pass
+    scrapbook2zotero.main(args)
+    assert filecmp.cmp(samplefname, tmpfname)
+
 def test_1_reading_scrapbook_rdf():
     """ Parse test rdf file and check that we have certain number of entries
     and root is Node object
@@ -41,33 +60,15 @@ def test_1_reading_scrapbook_rdf():
     assert isinstance(root, scrapbook2zotero.Node)
 
 def test_2_standard_run():
-    """ Generate .rdf file from scrapbook_test_data and compare it to
-    stored .rdf file from samples/standard.rdf
+    """ Testing default output """
+    run_main_and_compare(["scrapbook_test_data", "tmp/test.rdf"],
+        "samples/standard.rdf", "tmp/test.rdf")
 
-    If you change output format or contents of scrapbook_test_data,
-    rebuild standard.rdf.
-    """
-    try:
-        os.remove("tmp/test2.rdf")
-    except OSError:
-        pass
-    scrapbook2zotero.main(["scrapbook_test_data", "tmp/test2.rdf"])
-    assert filecmp.cmp("samples/standard.rdf", "tmp/test2.rdf")
 
 def test_3_exclude():
-    """ Generate .rdf file from scrapbook_test_data and compare it to
-    stored .rdf file from samples/standard_1_4_excluded.rdf. Entries
-    number 1 and 4 are excluded.
-
-    If you change output format or contents of scrapbook_test_data,
-    rebuild standard_1_4_excluded.rdf.
-    """
-    try:
-        os.remove("tmp/test3.rdf")
-    except OSError:
-        pass
-    scrapbook2zotero.main(["scrapbook_test_data", "tmp/test3.rdf", "--exclude", "1", "4"])
-    assert filecmp.cmp("samples/standard_1_4_excluded.rdf", "tmp/test3.rdf")
+    """ Testing --exclude feature, excluding items #1 and #4 """
+    run_main_and_compare(["scrapbook_test_data", "tmp/test-exclude.rdf", "--exclude", "1", "4"],
+        "samples/standard_1_4_excluded.rdf", "tmp/test-exclude.rdf")
 
 def test_4_win32():
     """ Test win32 build
@@ -82,48 +83,21 @@ def test_4_win32():
     except OSError:
         pass
     subprocess.check_call(["wine", "dist/scrapbook2zotero.exe",
-                           "scrapbook_test_data", "tmp/test4-windows.rdf"])
-    subprocess.check_call(["dos2unix", "-n", "tmp/test4-windows.rdf", "tmp/test4.rdf"])
-    assert filecmp.cmp("samples/standard.rdf", "tmp/test4.rdf")
+                           "scrapbook_test_data", "tmp/test-windows-crlf.rdf"])
+    subprocess.check_call(["dos2unix", "-n", "tmp/test-windows-crlf.rdf", "tmp/test-windows.rdf"])
+    assert filecmp.cmp("samples/standard.rdf", "tmp/test-windows.rdf")
 
 def test_5_nocoll():
-    """ Generate .rdf file from scrapbook_test_data and compare it to
-    stored .rdf file from samples/standard-no-collections.rdf. Testing --nocoll flag.
-
-    If you change output format or contents of scrapbook_test_data,
-    rebuild standard.rdf.
-    """
-    try:
-        os.remove("tmp/test5.rdf")
-    except OSError:
-        pass
-    scrapbook2zotero.main(["scrapbook_test_data", "tmp/test5.rdf", "--nocoll"])
-    assert filecmp.cmp("samples/standard-no-collections.rdf", "tmp/test5.rdf")
+    """ Testing disabling of collection exports (--nocoll flag) """
+    run_main_and_compare(["scrapbook_test_data", "tmp/test-nocoll.rdf", "--nocoll"],
+        "samples/standard-no-collections.rdf", "tmp/test-nocoll.rdf")
 
 def test_6_notags():
-    """ Generate .rdf file from scrapbook_test_data and compare it to
-    stored .rdf file from samples/standard-no-tags.rdf. Testing --tags flag.
+    """ Testing disabling of collection exports (--notags flag) """
+    run_main_and_compare(["scrapbook_test_data", "tmp/test-notags.rdf", "--notags"],
+        "samples/standard-no-tags.rdf", "tmp/test-notags.rdf")
 
-    If you change output format or contents of scrapbook_test_data,
-    rebuild standard.rdf.
-    """
-    try:
-        os.remove("tmp/test6.rdf")
-    except OSError:
-        pass
-    scrapbook2zotero.main(["scrapbook_test_data", "tmp/test6.rdf", "--notags"])
-    assert filecmp.cmp("samples/standard-no-tags.rdf", "tmp/test6.rdf")
-
-def test_7_notags():
-    """ Generate .rdf file from scrapbook_test_data and compare it to
-    stored .rdf file from samples/standard-no-dedup.rdf. Testing --nodedup flag.
-
-    If you change output format or contents of scrapbook_test_data,
-    rebuild rdf file.
-    """
-    try:
-        os.remove("tmp/test7.rdf")
-    except OSError:
-        pass
-    scrapbook2zotero.main(["scrapbook_test_data", "tmp/test7.rdf", "--nodedup"])
-    assert filecmp.cmp("samples/standard-no-dedup.rdf", "tmp/test7.rdf")
+def test_7_nodedup():
+    """ Testing disabling of deduplication (--nodedup flag) """
+    run_main_and_compare(["scrapbook_test_data", "tmp/test-nodedup.rdf", "--nodedup"],
+        "samples/standard-no-dedup.rdf", "tmp/test-nodedup.rdf")
