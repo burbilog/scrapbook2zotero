@@ -38,8 +38,7 @@ build32:
 	wine pyinstaller --onefile scrapbook2zotero.py
 
 zip32:
-	VERSION=`./get-version.sh`
-	cd dist && zip scrapbook2zotero-v$(VERSION).zip scrapbook2zotero.exe
+	cd dist && zip scrapbook2zotero-v$(shell git describe --abbrev=4 --dirty --always --tags).zip scrapbook2zotero.exe
 
 
 # Run this if you are sure that scrapbook2zotero output is correct
@@ -52,4 +51,4 @@ build_samples:
 	./scrapbook2zotero.py scrapbook_test_data samples/standard-no-dedup.rdf --nodedup
 
 current-version:
-	@echo Current version is `./get-version.sh`
+	@echo Current version is $(shell git describe --abbrev=4 --dirty --always --tags)
