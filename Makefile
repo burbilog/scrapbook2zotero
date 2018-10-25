@@ -38,7 +38,7 @@ build32:
 	wine pyinstaller --onefile scrapbook2zotero.py
 
 zip32:
-	cd dist && zip scrapbook2zotero-v$(shell git describe --abbrev=4 --dirty --always --tags).zip scrapbook2zotero.exe
+	cd dist && zip scrapbook2zotero-$(shell git describe --abbrev=4 --dirty --always --tags).zip scrapbook2zotero.exe
 
 
 # Run this if you are sure that scrapbook2zotero output is correct
