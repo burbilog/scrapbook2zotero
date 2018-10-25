@@ -10,8 +10,7 @@ all:
 	@echo "  build_samples - rebuild samples in samples/ directory (used for testing), make sure your .rdf output is correct!"
 
 test:
-	py.test-2.7
-	#pytest
+	pytest
 
 lint: lint_test lint_util
 

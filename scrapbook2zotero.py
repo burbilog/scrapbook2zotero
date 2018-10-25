@@ -45,9 +45,11 @@ import rdflib
 import rdflib.plugins.memory
 import rdflib.plugins.parsers.rdfxml
 
+# Enforce python 2 (for many reasons, including win32 test environment)
+assert sys.version_info.major==2, 'Python 2 required'
 
 # SemVer
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 
 def debug(msg):
     """ Print debug message if --debug option was given """

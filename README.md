@@ -58,7 +58,7 @@ Zotero thinks that pages with equal titles are the same pages. I had hundreds of
 
 ## Development information
 
-Prerequisites: python 2.7 for linux and windows, pytest, rdflib. This script was developed on Linux and windows .exe is built with wine.
+Prerequisites: python 2.7 for linux and windows, pytest, rdflib. This script was developed on Linux and windows .exe is built with wine. For windows build and test 32bit wine is required (WINEARCH=win32 during first run). Also dos2unix utility is needed for win32 tests. 
 
 ### Setup
 
