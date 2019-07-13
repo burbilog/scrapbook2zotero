@@ -85,7 +85,8 @@ def test_4_win32():
     subprocess.check_call(["wine", "dist/scrapbook2zotero.exe",
                            "scrapbook_test_data", "tmp/test-windows-crlf.rdf"])
     subprocess.check_call(["dos2unix", "-n", "tmp/test-windows-crlf.rdf", "tmp/test-windows.rdf"])
-    assert filecmp.cmp("samples/standard.rdf", "tmp/test-windows.rdf")
+    # standard-windows.rdf is like standard.rdf but with '/' replaced by '\' in file paths 
+    assert filecmp.cmp("samples/standard-windows.rdf", "tmp/test-windows.rdf")
 
 def test_5_nocoll():
     """ Testing disabling of collection exports (--nocoll flag) """

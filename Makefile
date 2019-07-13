@@ -35,7 +35,7 @@ w:
 win32: build32 zip32
 
 build32:
-	wine pyinstaller --onefile scrapbook2zotero.py
+	wine pyinstaller --onefile --hiddenimport=rdflib scrapbook2zotero.py
 
 zip32:
 	cd dist && zip scrapbook2zotero-$(shell git describe --abbrev=4 --dirty --always --tags).zip scrapbook2zotero.exe

@@ -397,7 +397,7 @@ def export_node(node, source_dir, tagchain, counter, deduplicator):
         <rdf:resource rdf:resource="{1}"/>
         <dc:title>{2}</dc:title>
         <link:type>application/pdf</link:type>
-    </z:Attachment>""".format(pdf_resource, basedir + '/' + pdfname, pdfname)
+    </z:Attachment>""".format(pdf_resource, os.path.normpath(basedir + '/' + pdfname), pdfname)
             pdf_links += u'\n        <link:link rdf:resource="#item_{0}"/>'.format(
                 pdf_resource)
             debug("pdf attachment '%s' added to '%s'" % (pdfname, node.nodeid))
@@ -438,7 +438,7 @@ def export_node(node, source_dir, tagchain, counter, deduplicator):
         <z:linkMode>1</z:linkMode>
         <link:type>text/html</link:type>
     </z:Attachment>""".format(node.nodeid, # {0}
-                              indexfname, # {1}
+                              os.path.normpath(indexfname), # {1}
                               ampersand(node.source), # {2}
                               nodetime_formatted, # {3}
                               ampersand(node.name) # {4}
